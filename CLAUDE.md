@@ -1,0 +1,133 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Repository Purpose
+
+This is a **Claude Code framework repository** - a meta-development system for creating structured AI agent workflows. You are working on the framework itself, not using it for a client project. Your goal is to enhance, extend, and improve this framework to help it deliver high-value production-ready software in other projects.
+
+## Framework Architecture
+
+### Core Concept: Multi-Agent Workflow Orchestration
+
+This framework implements a pattern where:
+1. **Slash commands** (`.claude/commands/*.md`) define high-level workflows
+2. **Specialized agents** (`.claude/agents/*.md`) handle specific development roles
+3. **State directories** (`.claude/plans/`, `.claude/specs/`) persist decisions and context
+4. Commands orchestrate multiple agents in sequence to accomplish complex tasks
+
+### Agent System Design
+
+Agents are defined with YAML frontmatter containing:
+- `name` - Agent identifier
+- `description` - Role and when to use (includes PROACTIVE usage triggers)
+- `model` - Preferred model (opus for complex reasoning, sonnet for implementation)
+- `tools` - Tool access (Bash, Read, Write, Edit)
+
+**Key Insight**: The `description` field contains "Use PROACTIVELY" directives that tell Claude when to invoke this agent automatically. This enables Claude to self-orchestrate workflows.
+
+### Current Agent Ecosystem
+
+**Strategic Agents (opus)**:
+- `product-manager` - Requirements gathering, user stories, acceptance criteria
+- `architect` - System design, technology selection, architectural decisions
+
+**Implementation Agents (sonnet)**:
+- `engineer` - Code implementation following established patterns
+- `tester` - Test creation and execution
+- `code-reviewer` - Code quality, security, performance review
+
+**Supporting Agents**:
+- `security-auditor` - Vulnerability scanning and security verification
+- `documenter` - Documentation generation and maintenance
+- `devops` - Deployment preparation and CI/CD
+
+### Command Pattern Structure
+
+Commands use `$ARGUMENTS` variable and follow this structure:
+1. **Context setting** - What task is being performed
+2. **Multi-step process** - Which agents to use and in what order
+3. **Output specification** - What to deliver and where to save it
+
+Commands implement **staged workflows**: plan → design → implement → verify → document
+
+## Framework Extension Guidelines
+
+### When Enhancing This Framework
+
+**DO:**
+- Add new agents for emerging development needs (e.g., API designer, database optimizer, performance analyst)
+- Create new command workflows that combine agents in novel ways
+- Improve agent prompts to produce more actionable, specific outputs
+- Add state management patterns (new directories under `.claude/`)
+- Enhance coordination between agents (passing context, building on previous agent output)
+- Design for real-world production usage - prioritize quality, security, and maintainability
+
+**DON'T:**
+- Follow the existing structure rigidly - you're building/improving it, not using it
+- Add agents that duplicate existing functionality without clear differentiation
+- Create overly complex workflows that obscure simple tasks
+- Add generic advice that doesn't leverage agent specialization
+
+### Design Principles for Production-Ready Software
+
+When enhancing this framework, optimize for:
+
+1. **Clear separation of concerns** - Each agent has distinct, non-overlapping responsibilities
+2. **Proactive agent invocation** - Agents should trigger automatically based on context
+3. **Context persistence** - Important decisions saved to `.claude/plans/` and `.claude/specs/`
+4. **Incremental verification** - Each step validated before proceeding
+5. **Production quality gates** - Security, testing, and review as mandatory steps
+6. **Minimal coordination overhead** - Commands should orchestrate smoothly without user intervention
+
+## Common Development Tasks
+
+### Adding a New Agent
+
+1. Create `.claude/agents/[name].md` with YAML frontmatter
+2. Define clear `description` with "Use PROACTIVELY" triggers
+3. Specify `model` choice (opus for reasoning, sonnet for execution)
+4. List required `tools` access
+5. Write detailed prompt explaining responsibilities and output format
+6. Update relevant commands to orchestrate the new agent
+
+### Adding a New Command
+
+1. Create `.claude/commands/[name].md`
+2. Use `$ARGUMENTS` for parameterization
+3. Define agent orchestration sequence
+4. Specify where outputs should be saved (`.claude/plans/`, `.claude/specs/`, etc.)
+5. Include verification steps
+
+### Improving Agent Prompts
+
+Focus on:
+- **Specificity** - Exact output format, not general guidance
+- **Actionability** - What to produce, not just what to think about
+- **Quality criteria** - What "good" looks like for this agent's output
+- **Integration points** - How this agent's output feeds other agents
+
+## Framework Evolution Strategy
+
+This framework should evolve toward:
+1. **Self-orchestrating workflows** - Claude determines which agents to invoke based on context
+2. **Adaptive complexity** - Simple tasks stay simple, complex tasks get appropriate structure
+3. **Production-ready defaults** - Security, testing, and quality built into every workflow
+4. **Cross-project learning** - Patterns that work across different tech stacks and domains
+5. **Minimal user intervention** - Smart defaults with targeted questions only when necessary
+
+## Key Files
+
+- `TEMPLATE-CLAUDE.md` - Template for projects using this framework (to be customized per project)
+- `.claude/commands/start.md` - Project initialization workflow (creates project-specific CLAUDE.md)
+- `.claude/agents/*.md` - Agent definitions (the core reusable components)
+- `.claude/plans/` - Persistent planning outputs
+- `.claude/specs/` - Detailed specifications
+
+## Notes on Framework Usage
+
+When this framework is used in actual projects:
+- Projects will have their own CLAUDE.md (generated from TEMPLATE-CLAUDE.md)
+- Project CLAUDE.md should document project-specific architecture, commands, and tech stack
+- This repository's `.claude/` directory gets copied to new projects as a starting point
+- Commands are invoked as `/project:[command]` in client projects
