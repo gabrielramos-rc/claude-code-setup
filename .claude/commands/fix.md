@@ -33,10 +33,35 @@ Use the **engineer agent** to:
    - Preserve existing functionality
    - Add error handling if missing
 
-3. **Verify**
-   - Test the fix works
-   - Ensure no regressions
-   - Run existing tests
+3. **Verify & Loop (Max 3 Attempts)**
+
+Follow the reflexion loop pattern in `.claude/patterns/reflexion.md`.
+
+Use the **tester agent** to run tests.
+
+**Reflexion Protocol (for fix command):**
+
+**Attempt 1:** Apply fix, run tests. If tests fail, analyze why fix didn't work, adjust.
+**Attempt 2:** If tests fail again, analyze deeper issue, adjust fix.
+**Attempt 3:** If tests fail again, **STOP**.
+
+**Failure Termination:**
+
+If tests fail after Attempt 3, output:
+
+```
+🔴 **Automated fixes failed after 3 attempts**
+
+**Last Error:**
+[error details]
+
+**Manual Intervention Required:**
+- Review error log above
+- Recommended action: [specific suggestion]
+- Run `/project:debug` OR manually fix [specific file:line]
+```
+
+Do NOT attempt a 4th fix.
 
 ### Output
 Provide:

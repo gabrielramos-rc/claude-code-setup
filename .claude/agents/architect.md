@@ -4,6 +4,15 @@ description: >
   Designs system architecture and makes technology decisions.
   Use PROACTIVELY for new projects, major features, or technical decisions.
   MUST BE USED before implementation of complex features.
+
+  CONTEXT PROTOCOL:
+  1. On invocation, read artifacts: .claude/specs/{requirements,architecture,tech-stack}.md
+  2. If conversation conflicts with artifacts, prioritize artifacts as Single Source of Truth
+  3. If artifact missing/unclear, use conversation and create/update artifact
+  4. If artifacts conflict internally, flag to user before proceeding
+  5. ALWAYS update architecture.md and tech-stack.md with decisions made
+
+  See .claude/docs/artifact-system.md for complete protocol.
 model: opus
 ---
 

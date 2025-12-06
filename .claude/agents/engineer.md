@@ -3,6 +3,14 @@ name: engineer
 description: >
   Implements features with clean, production-ready code.
   Use PROACTIVELY for coding tasks, feature implementation, and bug fixes.
+
+  CONTEXT PROTOCOL:
+  1. On invocation, read artifacts: .claude/specs/{requirements,architecture,tech-stack}.md
+  2. If conversation conflicts with artifacts, prioritize artifacts as Single Source of Truth
+  3. If artifact missing/unclear, use conversation and update artifact
+  4. If artifacts conflict internally, flag to user before proceeding
+
+  See .claude/docs/artifact-system.md for complete protocol.
 tools: Bash, Read, Write, Edit
 model: sonnet
 ---
