@@ -2,9 +2,28 @@
 
 ## Instructions
 
-Create or run tests for: **$ARGUMENTS**
+Create or run tests based on: **$ARGUMENTS**
 
 Follow the context injection pattern in `.claude/patterns/context-injection.md` and model selection guide in `.claude/patterns/model-selection.md`.
+
+---
+
+## Usage
+
+```
+/project:test                     # Run all tests
+/project:test unit auth           # Unit tests for auth module
+/project:test integration api     # Integration tests for API
+/project:test e2e checkout        # E2E tests for checkout flow
+/project:test coverage            # Full suite with coverage report
+```
+
+**Scope options:**
+- `unit [target]` - Unit tests only (fast, isolated, mocked dependencies)
+- `integration [target]` - Integration tests (real dependencies, API contracts)
+- `e2e [target]` - End-to-end tests (browser automation, full stack)
+- `coverage` - All tests with coverage report
+- No scope - Infer from target or run all
 
 ---
 
@@ -72,7 +91,13 @@ You are the Tester agent.
 **Context already loaded above - DO NOT re-read these files.**
 **File tree shows project structure - DO NOT run ls/find commands.**
 
-Your task: Create and run comprehensive tests for: $ARGUMENTS
+Your task: **$ARGUMENTS**
+
+Parse the request to determine:
+- **Scope:** unit, integration, e2e, coverage, or all (default)
+- **Target:** Specific module/feature (optional)
+
+See "Scope-Aware Testing Protocol" in your agent definition for detailed instructions.
 
 Follow these steps:
 

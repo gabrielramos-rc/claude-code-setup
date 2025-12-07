@@ -31,8 +31,8 @@
 | 8 | WST-02 | Waste | Redundant commands: `plan.md` and `spec.md` serve nearly identical purposes | MEDIUM | [x] |
 | 9 | OPT-01 | Optimization | Opus model overused - Haiku sufficient for docs/simple tasks | MEDIUM | [x] |
 | 10 | OPT-02 | Optimization | Parallel agent execution underutilized (only `implement.md` and `fix.md`) | MEDIUM | [x] Won't Fix |
-| 11 | GAP-02 | Gap | No integration/E2E testing command | MEDIUM | [ ] |
-| 12 | GAP-03 | Gap | No rollback/recovery workflow (`/project:rollback` or `/project:undo`) | MEDIUM | [ ] |
+| 11 | GAP-02 | Gap | No integration/E2E testing command | MEDIUM | [x] |
+| 12 | GAP-03 | Gap | No rollback/recovery workflow (`/project:rollback` or `/project:undo`) | MEDIUM | [x] |
 | 13 | GAP-04 | Gap | No API Designer agent for OpenAPI specs, versioning, rate limiting | MEDIUM | [ ] |
 | 14 | GAP-05 | Gap | No Database/Migration agent for schema design and migrations | MEDIUM | [ ] |
 | 15 | GAP-06 | Gap | No Performance agent for profiling, bundle analysis, load testing | MEDIUM | [ ] |
@@ -322,6 +322,28 @@ The existing parallel validation in `implement.md` and `fix.md` works because Te
 **Recommendation:**
 Create `/project:test-e2e` or extend `test.md` with scope parameter.
 
+**Resolution (2025-12-07):**
+Extended `test.md` with parameterized scope (cleaner than separate command):
+
+**Usage:**
+```
+/project:test                     # Run all tests
+/project:test unit auth           # Unit tests for auth module
+/project:test integration api     # Integration tests for API
+/project:test e2e checkout        # E2E tests for checkout flow
+/project:test coverage            # Full suite with coverage report
+```
+
+**Changes:**
+- Updated `test.md` with usage examples and scope parameter documentation
+- Added "Scope-Aware Testing Protocol" to Tester agent (120+ lines):
+  - Scope parsing logic (unit/integration/e2e/coverage/all)
+  - Project tooling detection (Vitest, Jest, Playwright, Cypress, pytest)
+  - Scope-specific commands and behavior
+  - E2E pre-flight checks (fail immediately if server not running)
+  - E2E artifact handling (screenshots, traces, videos)
+  - Flaky test handling (max 2 retries)
+
 ---
 
 ### Priority 12: GAP-03 - No Rollback Workflow
@@ -338,6 +360,26 @@ Commands handle forward progress but no recovery:
 
 **Recommendation:**
 Create rollback command using git revert/reset.
+
+**Resolution (2025-12-07):**
+Created `/project:rollback` command with comprehensive safety features:
+
+**Usage:**
+```
+/project:rollback                 # Revert last commit (safe)
+/project:rollback 3               # Revert last 3 commits
+/project:rollback abc123          # Revert specific commit
+/project:rollback --hard          # Reset last commit (destructive)
+/project:rollback --hard 3        # Reset last 3 commits
+```
+
+**Features:**
+- **Default: revert** - Safe mode, creates undo commits, preserves history
+- **Optional: reset** - Destructive mode with `--hard` flag, removes commits
+- **Safety checks:** Uncommitted changes, pushed commits, merge commits, large rollbacks
+- **Backup branch:** Always created before any rollback operation
+- **Preview:** Shows exactly what will be undone before confirmation
+- **Strong warnings:** Extra confirmation required for destructive operations
 
 ---
 

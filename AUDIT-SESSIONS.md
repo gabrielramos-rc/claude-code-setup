@@ -98,12 +98,17 @@ fix(audit): quick security and functionality fixes
 
 ## Session 5: New Commands
 
-**Status:** PENDING
+**Status:** COMPLETE
+**Completed:** 2025-12-07
 
-| Issue | Description |
-|-------|-------------|
-| GAP-02 | Create integration/E2E testing command |
-| GAP-03 | Create rollback/recovery workflow |
+| Issue | Description | Status |
+|-------|-------------|--------|
+| GAP-02 | Create integration/E2E testing command | [x] DONE |
+| GAP-03 | Create rollback/recovery workflow | [x] DONE |
+
+**Changes Made:**
+- GAP-02: Extended `test.md` with parameterized scope (unit/integration/e2e/coverage). Added "Scope-Aware Testing Protocol" to Tester agent with tooling detection, E2E pre-flight checks, artifact handling.
+- GAP-03: Created `rollback.md` command with git revert (default, safe) and git reset (--hard flag, destructive). Includes safety checks, backup branches, previews, and confirmation prompts.
 
 ---
 
@@ -250,7 +255,7 @@ Let's start with the first item.
 | Session 1 | 2025-12-07 | ~30 min | bd87a6e |
 | Session 2 | 2025-12-07 | ~15 min | a9a8c39 |
 | Session 3 | 2025-12-07 | ~15 min | e7bd91a |
-| Session 4 | 2025-12-07 | ~15 min | - |
-| Session 5 | - | - | - |
+| Session 4 | 2025-12-07 | ~15 min | 6e5e9ef |
+| Session 5 | 2025-12-07 | ~25 min | - |
 | Session 6 | - | - | - |
 | Session 7 | - | - | - |
