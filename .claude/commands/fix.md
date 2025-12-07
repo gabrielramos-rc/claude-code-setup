@@ -4,7 +4,34 @@
 
 Debug and fix: **$ARGUMENTS**
 
-Follow the context injection pattern in `.claude/patterns/context-injection.md`.
+Follow the context injection pattern in `.claude/patterns/context-injection.md` and state-based session management pattern in `.claude/patterns/state-based-session-management.md`.
+
+---
+
+## Initialize Task Tracking
+
+Write initial state to `.claude/plans/current-task.md`:
+
+```markdown
+## Current Task
+**Command:** /project:fix $ARGUMENTS
+**Status:** IN_PROGRESS
+**Started:** {current_timestamp}
+**Progress:** 0%
+
+## Workflow Steps
+- [ ] Load context (specs, file tree, error logs)
+- [ ] Engineer: Diagnose and fix issue
+- [ ] Validation: Test + Code Review
+- [ ] Approval
+
+## Context
+**Issue:** $ARGUMENTS
+**Goal:** Identify root cause and implement fix with verification
+
+## Resume Instructions
+If interrupted, run: `/project:resume`
+```
 
 ---
 

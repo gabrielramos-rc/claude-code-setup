@@ -4,7 +4,36 @@
 
 Implement the feature or task: **$ARGUMENTS**
 
-Follow the context injection pattern in `.claude/patterns/context-injection.md`.
+Follow the context injection pattern in `.claude/patterns/context-injection.md` and state-based session management pattern in `.claude/patterns/state-based-session-management.md`.
+
+---
+
+## Initialize Task Tracking
+
+Write initial state to `.claude/plans/current-task.md`:
+
+```markdown
+## Current Task
+**Command:** /project:implement $ARGUMENTS
+**Status:** IN_PROGRESS
+**Started:** {current_timestamp}
+**Progress:** 0%
+
+## Workflow Steps
+- [ ] Load context (specs, file tree)
+- [ ] Architect: Design feature architecture
+- [ ] Engineer: Implement code
+- [ ] Validation: Test + Security + Review
+- [ ] Documentation: Update docs
+- [ ] Human gate: Approval
+
+## Context
+**Feature:** $ARGUMENTS
+**Goal:** Implement feature following specifications and quality gates
+
+## Resume Instructions
+If interrupted, run: `/project:resume`
+```
 
 ---
 
@@ -46,6 +75,22 @@ find . -type d \( -name node_modules -o -name .git -o -name dist -o -name build 
 
 If resuming a workflow, read:
 - `.claude/plans/current-task.md`
+
+**Update task progress after context loading:**
+
+```markdown
+## Current Task
+**Progress:** 15%
+
+## Workflow Steps
+- [x] Load context (specs, file tree) ✓ (completed {timestamp})
+- [ ] Engineer: Implement code ← CURRENT
+
+## Last Checkpoint
+**Completed:** Loaded specifications and project file tree
+**Next Step:** Invoke Engineer agent to implement code following architecture specs
+**Files Modified:** None (context loading only)
+```
 
 ---
 
@@ -132,6 +177,25 @@ Follow these steps:
    ```
 
 Output: Path to `.claude/state/implementation-notes.md`
+```
+
+**Update task progress after implementation:**
+
+```markdown
+## Current Task
+**Progress:** 40%
+
+## Workflow Steps
+- [x] Load context ✓
+- [x] Engineer: Implement code ✓ (completed {timestamp})
+- [ ] Validation: Test + Security + Review ← CURRENT
+
+## Last Checkpoint
+**Completed:** Engineer implemented feature following architecture specs
+**Next Step:** Invoke quality validation agents in parallel (Tester + Security + Reviewer)
+**Files Modified:**
+- {list files from implementation-notes.md}
+- .claude/state/implementation-notes.md
 ```
 
 ---
@@ -298,6 +362,29 @@ Follow the reflexion loop pattern in `.claude/patterns/reflexion.md`.
 - Run `/project:debug` to investigate OR manually fix [specific file:line]
 ```
 
+**Update task progress after validation passes:**
+
+```markdown
+## Current Task
+**Progress:** 70%
+
+## Workflow Steps
+- [x] Load context ✓
+- [x] Engineer: Implement code ✓
+- [x] Validation: Test + Security + Review ✓ (completed {timestamp})
+- [ ] Documentation: Update docs ← CURRENT
+
+## Last Checkpoint
+**Completed:** Validation passed (tests: X%, security: Y findings, review: PASS)
+**Next Step:** Invoke Documenter agent to update end-user documentation
+**Files Modified:**
+- {implementation files from Step 1}
+- tests/* (from Tester)
+- .claude/state/test-results.md
+- .claude/state/security-findings.md
+- .claude/state/code-review-findings.md
+```
+
 ---
 
 ## Step 4: Documentation
@@ -333,6 +420,27 @@ Output:
 - Commit documentation updates
 ```
 
+**Update task progress after documentation:**
+
+```markdown
+## Current Task
+**Progress:** 90%
+
+## Workflow Steps
+- [x] Load context ✓
+- [x] Engineer: Implement code ✓
+- [x] Validation: Test + Security + Review ✓
+- [x] Documentation: Update docs ✓ (completed {timestamp})
+- [ ] Human gate: Approval ← CURRENT
+
+## Last Checkpoint
+**Completed:** Documenter updated end-user documentation
+**Next Step:** Present summary to user for approval
+**Files Modified:**
+- {all previous files}
+- docs/* (from Documenter)
+```
+
 ---
 
 ## Step 5: Human Gate
@@ -359,7 +467,30 @@ Present summary to user:
 - Approve and continue? (y/n)
 ```
 
-If user approves, workflow complete.
+**If user approves, update task status to COMPLETED:**
+
+```markdown
+## Current Task
+**Command:** /project:implement $ARGUMENTS
+**Status:** COMPLETED
+**Started:** {started_timestamp}
+**Completed:** {current_timestamp}
+**Duration:** {calculate duration}
+**Progress:** 100%
+
+## Results
+- **Implementation:** {summary from implementation-notes.md}
+- **Tests:** {coverage}% coverage, all passing ✅
+- **Security:** {findings count by severity}
+- **Code Review:** PASS ✅
+- **Documentation:** Updated
+
+## Files Modified
+- {list all files from all steps}
+
+## Resume Instructions
+Task completed. Run new command or `/project:resume` to review results.
+```
 
 ---
 
