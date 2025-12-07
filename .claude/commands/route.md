@@ -9,7 +9,7 @@ Analyze the request: **$ARGUMENTS**
 **Level 1: Cosmetic/One-off**
 - File count: 1-2 files
 - No new dependencies
-- No tests required
+- Basic verification only (existing tests run)
 - Examples: typo, color change, single function fix, log statement
 - **Recommendation:** Run `/project:implement` directly.
 

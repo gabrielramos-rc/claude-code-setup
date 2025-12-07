@@ -28,6 +28,8 @@ Use the **engineer agent** to:
 
 4. **Verify & Loop (Max 3 Attempts)**
 
+Follow the reflexion loop pattern in `.claude/patterns/reflexion.md`.
+
 Use the **tester agent** to run tests.
 
 **Reflexion Protocol:**
@@ -49,7 +51,7 @@ If tests fail after Attempt 3, output:
 **Manual Intervention Required:**
 - Review error log above
 - Recommended action: [specific suggestion]
-- Run `/project:debug` OR manually fix [specific file:line]
+- Manually fix [specific file:line]
 ```
 
 Do NOT attempt a 4th fix.
