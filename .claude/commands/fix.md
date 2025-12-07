@@ -56,6 +56,22 @@ tree -L 3 -I 'node_modules|.git|dist|build|coverage' > /tmp/project-tree.txt
 
 If error logs or test failures are available, capture them.
 
+**Update task progress after context loading:**
+
+```markdown
+## Current Task
+**Progress:** 25%
+
+## Workflow Steps
+- [x] Load context (specs, file tree, error logs) ✓ (completed {timestamp})
+- [ ] Engineer: Diagnose and fix issue ← CURRENT
+
+## Last Checkpoint
+**Completed:** Loaded specifications, project file tree, and error context
+**Next Step:** Invoke Engineer agent to investigate and fix the issue
+**Files Modified:** None (context loading only)
+```
+
 ---
 
 ## Step 1: Investigate Issue
@@ -142,6 +158,26 @@ Follow these steps:
    ```
 
 Output: Path to `.claude/state/fix-notes.md`
+```
+
+**Update task progress after fix implementation:**
+
+```markdown
+## Current Task
+**Progress:** 60%
+
+## Workflow Steps
+- [x] Load context ✓
+- [x] Engineer: Diagnose and fix issue ✓ (completed {timestamp})
+- [ ] Validation: Test + Code Review ← CURRENT
+
+## Last Checkpoint
+**Completed:** Engineer diagnosed root cause and implemented fix
+**Next Step:** Invoke quality validation agents in parallel (Tester + Code Reviewer)
+**Files Modified:**
+- {list files from fix-notes.md}
+- .claude/state/diagnosis.md
+- .claude/state/fix-notes.md
 ```
 
 ---
@@ -274,6 +310,28 @@ Read both result files:
 **If both pass:**
 - Proceed to Output
 
+**Update task progress after validation passes:**
+
+```markdown
+## Current Task
+**Progress:** 90%
+
+## Workflow Steps
+- [x] Load context ✓
+- [x] Engineer: Diagnose and fix issue ✓
+- [x] Validation: Test + Code Review ✓ (completed {timestamp})
+- [ ] Approval ← CURRENT
+
+## Last Checkpoint
+**Completed:** Validation passed (tests: passing, review: PASS)
+**Next Step:** Present summary to user for approval
+**Files Modified:**
+- {implementation files from Step 1}
+- tests/* (from Tester)
+- .claude/state/test-results.md
+- .claude/state/code-review-findings.md
+```
+
 ---
 
 ## Output
@@ -284,5 +342,29 @@ Provide:
 - **Verification:** Test results showing fix works
 - **Prevention:** Suggestions to prevent similar issues
 - **Git Commit:** Changes committed with descriptive message
+
+**Update task status to COMPLETED:**
+
+```markdown
+## Current Task
+**Command:** /project:fix $ARGUMENTS
+**Status:** COMPLETED
+**Started:** {started_timestamp}
+**Completed:** {current_timestamp}
+**Duration:** {calculate duration}
+**Progress:** 100%
+
+## Results
+- **Root Cause:** {from diagnosis.md}
+- **Fix Applied:** {summary from fix-notes.md}
+- **Tests:** All passing ✅
+- **Code Review:** PASS ✅
+
+## Files Modified
+- {list all files from all steps}
+
+## Resume Instructions
+Task completed. Run new command or `/project:resume` to review results.
+```
 
 **Ready for next command.**
