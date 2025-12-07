@@ -13,10 +13,10 @@ Follow the state-based session management pattern in `.claude/patterns/state-bas
 Read `.claude/plans/current-task.md` to understand current workflow state.
 
 **Check status:**
-- `IDLE` í No task in progress
-- `IN_PROGRESS` í Task was interrupted
-- `COMPLETED` í Task finished successfully
-- `FAILED` í Task encountered errors
+- `IDLE` - No task in progress
+- `IN_PROGRESS` - Task was interrupted
+- `COMPLETED` - Task finished successfully
+- `FAILED` - Task encountered errors
 
 ---
 
@@ -25,7 +25,7 @@ Read `.claude/plans/current-task.md` to understand current workflow state.
 ### If Status is IDLE
 
 ```
-=À No task in progress
+**No task in progress**
 
 .claude/plans/current-task.md shows no active workflow.
 
@@ -227,7 +227,7 @@ After completing the next step, update `.claude/plans/current-task.md`:
 ## Workflow Steps
 - [x] {previous steps} 
 - [x] {just_completed_step}  (completed {timestamp})
-- [ ] {next_step} ê CURRENT
+- [ ] {next_step} <- CURRENT
 
 ## Last Checkpoint
 **Completed:** {what was just finished}
@@ -257,7 +257,7 @@ When complete, update current-task.md:
 ### If current-task.md doesn't exist
 
 ```
-=À No task state file found
+**No task state file found**
 
 .claude/plans/current-task.md does not exist.
 
@@ -275,7 +275,7 @@ What would you like to do?
 ### If current-task.md is corrupted
 
 ```
-† Task state file corrupted
+**Task state file corrupted**
 
 Unable to parse .claude/plans/current-task.md.
 
@@ -290,7 +290,7 @@ What would you like to do?
 ### If "Next Step" is unclear
 
 ```
-† Unable to determine next step
+**Unable to determine** next step
 
 current-task.md does not have a clear "Next Step" instruction.
 
