@@ -48,10 +48,11 @@ This framework implements a pattern where:
 
 **Phase 1 Week 2: Role Enforcement** - ✅ Implemented (2025-12-06)
 
-All 8 agents updated with comprehensive role enforcement guidelines to prevent boundary violations:
+All 9 agents updated with comprehensive role enforcement guidelines to prevent boundary violations:
 
 **File Boundary Enforcement:**
-- **Architect** - ONLY `.claude/specs/*`, NEVER `src/*` or `tests/*`
+- **Architect** - ONLY `.claude/specs/*`, NEVER `src/*` or `tests/*`. Includes frontend architecture.
+- **UI/UX Designer** - ONLY `.claude/specs/ui-ux-specs.md`, `design-system.md`, `accessibility.md`
 - **Engineer** - ONLY `src/*` and `tests/*`, NEVER `.claude/specs/*`
 - **Tester** - ONLY `tests/*` and `.claude/state/test-results.md`
 - **Security Auditor** - Bash for scans, `.claude/state/security-findings.md` for reports
@@ -253,7 +254,8 @@ Agents are defined with YAML frontmatter containing:
 
 **Strategic Agents (opus)**:
 - `product-manager` - Requirements gathering, user stories, acceptance criteria
-- `architect` - System design, technology selection, architectural decisions
+- `ui-ux-designer` - User experience design, wireframes, design systems, accessibility
+- `architect` - System design (backend + frontend), technology selection, architectural decisions
 
 **Implementation Agents (sonnet)**:
 - `engineer` - Code implementation following established patterns
@@ -272,7 +274,7 @@ Commands use `$ARGUMENTS` variable and follow this structure:
 2. **Multi-step process** - Which agents to use and in what order
 3. **Output specification** - What to deliver and where to save it
 
-Commands implement **staged workflows**: plan → design → implement → verify → document
+Commands implement **staged workflows**: plan → UX design → architecture → implement → verify → document
 
 **Beta v0.2 Additions:**
 - **Reflexion loops** - Commands auto-retry failed operations (max 3 attempts)
@@ -389,6 +391,11 @@ This framework should evolve toward:
 - Updated `start.md` with CLAUDE.md auto-population from specifications
 - Progress tracking: 0% → 100% with checkpoint system
 - **Phase 3 Status:** 100% COMPLETE (all optional tasks included)
+
+### v0.3 Security Additions
+- `.claude/patterns/input-safety.md` - $ARGUMENTS validation and Bash path sanitization patterns
+- Updated `context-injection.md` - Clarified manual substitution process (no auto-templating)
+- Checklist for command authors on safe input handling
 
 ## Notes on Framework Usage
 

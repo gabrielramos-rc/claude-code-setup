@@ -41,6 +41,11 @@ If interrupted, run: `/project:resume`
 
 Before invoking any agents, gather all shared context to avoid redundant reads.
 
+**⚠️ MANUAL INJECTION:** When you see `{{PLACEHOLDER}}` in agent prompts below, YOU must:
+1. Read the corresponding file using the Read tool
+2. Replace the placeholder with the actual file contents when invoking the agent
+3. The placeholder notation is a convention - there is NO automatic substitution
+
 ### 1. Read Core Specifications
 
 Read the following files if they exist (skip if not found):
@@ -58,6 +63,11 @@ Store content for injection:
 - `.claude/specs/requirements.md`
 - `.claude/specs/architecture.md`
 - `.claude/specs/tech-stack.md`
+
+**For UI features, also read:**
+- `.claude/specs/ui-ux-specs.md`
+- `.claude/specs/design-system.md`
+- `.claude/specs/frontend-architecture.md`
 
 ### 2. Generate Project File Tree
 

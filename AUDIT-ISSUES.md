@@ -24,9 +24,9 @@
 | 1 | SEC-01 | Security | State files (`.claude/state/`) committed to git - risk of leaking secrets | HIGH | [x] |
 | 2 | SEC-02 | Security | Security Auditor has Write/Edit access - should be scoped | HIGH | [x] |
 | 3 | GAP-01 | Gap | UI/UX Designer lacks Bash access for accessibility tools (`axe-core`, `pa11y`) | HIGH | [x] |
-| 4 | BUG-01 | Bug | Context injection template variables (`{{REQUIREMENTS_CONTENT}}`) never actually substituted - pattern is manual | HIGH | [ ] |
-| 5 | SEC-03 | Security | No input validation/sanitization on `$ARGUMENTS` variable | MEDIUM | [ ] |
-| 6 | SEC-04 | Security | Bash commands use unsanitized user-provided paths/patterns | MEDIUM | [ ] |
+| 4 | BUG-01 | Bug | Context injection template variables (`{{REQUIREMENTS_CONTENT}}`) never actually substituted - pattern is manual | HIGH | [x] |
+| 5 | SEC-03 | Security | No input validation/sanitization on `$ARGUMENTS` variable | MEDIUM | [x] |
+| 6 | SEC-04 | Security | Bash commands use unsanitized user-provided paths/patterns | MEDIUM | [x] |
 | 7 | WST-01 | Waste | Duplicate functionality between Security Auditor and Code Reviewer (both check security) | MEDIUM | [ ] |
 | 8 | WST-02 | Waste | Redundant commands: `plan.md` and `spec.md` serve nearly identical purposes | MEDIUM | [ ] |
 | 9 | OPT-01 | Optimization | Opus model overused - Haiku sufficient for docs/simple tasks | MEDIUM | [ ] |
@@ -135,6 +135,14 @@ Either:
 2. Create a shell script/pre-processor that generates injection blocks
 3. Document exact steps Claude must follow
 
+**Resolution (2025-12-07):**
+Updated documentation to clarify manual process (Option 1):
+- Added "IMPORTANT: Manual Process" section to `.claude/patterns/context-injection.md`
+- Explains placeholders are conventions, NOT auto-substitution
+- Added example workflow showing read → store → replace steps
+- Added anti-patterns: "Don't assume placeholders auto-substitute"
+- Updated `implement.md` with explicit manual injection note in Step 0
+
 ---
 
 ### Priority 5: SEC-03 - No $ARGUMENTS Validation
@@ -154,6 +162,14 @@ Malicious input could inject shell commands or break markdown parsing.
 **Recommendation:**
 Document safe usage patterns and add input sanitization guidance.
 
+**Resolution (2025-12-07):**
+Created `.claude/patterns/input-safety.md` with comprehensive guidance:
+- Documented risks: shell injection, markdown injection, git message corruption
+- Safe usage patterns by context (display, Bash, git, file paths)
+- Summary table for quick reference
+- HEREDOC pattern for safe git commits
+- Checklist for command authors
+
 ---
 
 ### Priority 6: SEC-04 - Unsanitized Bash Paths
@@ -170,6 +186,14 @@ tree -L 3 -I '$USER_PROVIDED_PATTERN'
 
 **Recommendation:**
 Add guidance on escaping user input in Bash commands.
+
+**Resolution (2025-12-07):**
+Added Bash path sanitization section to `.claude/patterns/input-safety.md`:
+- Documented unsafe patterns (unquoted paths, glob injection, path traversal)
+- Safe patterns: always quote paths, validate before use, use `--` separator
+- Recommended patterns table by command type (tree, find, grep, cat, rm)
+- Special case guidance for tree ignore patterns
+- Checklist item for command authors
 
 ---
 

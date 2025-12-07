@@ -6,6 +6,29 @@
 
 ---
 
+## ⚠️ IMPORTANT: Manual Process
+
+**This pattern requires MANUAL execution by Claude.** There is no automatic templating engine.
+
+When you see placeholders like `{{REQUIREMENTS_CONTENT}}` or `{ARCHITECTURE_CONTENT}`:
+1. **YOU must read** the corresponding file using the Read tool
+2. **YOU must copy** the file contents
+3. **YOU must paste** the contents into the agent prompt where the placeholder appears
+
+**The placeholders are documentation conventions, NOT automatic substitution.**
+
+### Example Workflow
+
+```
+1. Command says: "Read .claude/specs/requirements.md"
+2. YOU run: Read tool on .claude/specs/requirements.md
+3. YOU store: The file contents in your context
+4. When invoking agent, YOU replace {{REQUIREMENTS_CONTENT}} with actual file contents
+5. The agent receives the ACTUAL content, not the placeholder text
+```
+
+---
+
 ## Problem Statement
 
 In v0.2, each agent reads specifications independently:
@@ -287,6 +310,12 @@ Your task: Design architecture for {FEATURE}
 
 ❌ **Don't:** Use plain text for multiple documents
 ✅ **Do:** Use XML structure with `<document>` tags
+
+❌ **Don't:** Assume placeholders auto-substitute
+✅ **Do:** Manually read files and paste content into prompts
+
+❌ **Don't:** Pass placeholder text `{{VARIABLE}}` to agents
+✅ **Do:** Replace placeholders with actual file contents before invoking
 
 ---
 
