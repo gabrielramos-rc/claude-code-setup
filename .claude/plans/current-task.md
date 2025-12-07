@@ -15,7 +15,7 @@ No task in progress. Run a command to start:
 - `/project:implement {feature}` - Implement a new feature
 - `/project:fix {bug}` - Fix a bug
 - `/project:test {scope}` - Run tests
-- `/project:spec {feature}` - Create specifications
+- `/project:plan {feature}` - Plan a feature
 
 ## Resume Instructions
 

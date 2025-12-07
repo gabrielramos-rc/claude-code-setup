@@ -16,8 +16,7 @@
 
 ### Planning
 - `/project:start [name]` - Start a new project
-- `/project:plan [feature]` - Plan a new feature
-- `/project:spec [feature]` - Create detailed specification
+- `/project:plan [feature]` - Plan a feature (requirements + technical design)
 
 ### Development
 - `/project:implement [task]` - Implement a feature/task (auto-retries up to 3x)

@@ -25,7 +25,7 @@ Analyze the request: **$ARGUMENTS**
 - New dependencies/frameworks
 - Integration tests required
 - Examples: new stack, refactor system, init project, auth system
-- **Recommendation:** Run `/project:start` or `/project:spec`.
+- **Recommendation:** Run `/project:start` or `/project:plan`.
 
 ### Ambiguous Cases
 

@@ -65,12 +65,18 @@ fix(audit): quick security and functionality fixes
 
 ## Session 3: Merge/Refactor
 
-**Status:** PENDING
+**Status:** COMPLETE
+**Completed:** 2025-12-07
 
-| Issue | Description |
-|-------|-------------|
-| WST-01 | Clarify Security Auditor vs Code Reviewer responsibilities |
-| WST-02 | Merge plan.md and spec.md commands |
+| Issue | Description | Status |
+|-------|-------------|--------|
+| WST-01 | Clarify Security Auditor vs Code Reviewer responsibilities | [x] DONE |
+| WST-02 | Merge plan.md and spec.md commands | [x] DONE |
+
+**Changes Made:**
+- WST-01: Removed ALL security from Code Reviewer. Security Auditor owns all security checks.
+- WST-02: Deleted `spec.md`. `plan.md` is single entry point for feature planning.
+- UNN-03: Marked obsolete (no `/project:spec` to overlap with PM agent)
 
 ---
 
@@ -238,7 +244,7 @@ Let's start with the first item.
 |---------|-----------|----------|--------|
 | Session 1 | 2025-12-07 | ~30 min | bd87a6e |
 | Session 2 | 2025-12-07 | ~15 min | a9a8c39 |
-| Session 3 | - | - | - |
+| Session 3 | 2025-12-07 | ~15 min | pending |
 | Session 4 | - | - | - |
 | Session 5 | - | - | - |
 | Session 6 | - | - | - |

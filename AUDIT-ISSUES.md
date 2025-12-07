@@ -27,8 +27,8 @@
 | 4 | BUG-01 | Bug | Context injection template variables (`{{REQUIREMENTS_CONTENT}}`) never actually substituted - pattern is manual | HIGH | [x] |
 | 5 | SEC-03 | Security | No input validation/sanitization on `$ARGUMENTS` variable | MEDIUM | [x] |
 | 6 | SEC-04 | Security | Bash commands use unsanitized user-provided paths/patterns | MEDIUM | [x] |
-| 7 | WST-01 | Waste | Duplicate functionality between Security Auditor and Code Reviewer (both check security) | MEDIUM | [ ] |
-| 8 | WST-02 | Waste | Redundant commands: `plan.md` and `spec.md` serve nearly identical purposes | MEDIUM | [ ] |
+| 7 | WST-01 | Waste | Duplicate functionality between Security Auditor and Code Reviewer (both check security) | MEDIUM | [x] |
+| 8 | WST-02 | Waste | Redundant commands: `plan.md` and `spec.md` serve nearly identical purposes | MEDIUM | [x] |
 | 9 | OPT-01 | Optimization | Opus model overused - Haiku sufficient for docs/simple tasks | MEDIUM | [ ] |
 | 10 | OPT-02 | Optimization | Parallel agent execution underutilized (only `implement.md` and `fix.md`) | MEDIUM | [ ] |
 | 11 | GAP-02 | Gap | No integration/E2E testing command | MEDIUM | [ ] |
@@ -46,7 +46,7 @@
 | 23 | OPT-04 | Optimization | No agent caching - specs re-read even when unchanged | LOW | [ ] |
 | 24 | UNN-01 | Unnecessary | Consider merging Tester + Code Reviewer into Quality Agent | LOW | [ ] |
 | 25 | UNN-02 | Unnecessary | DevOps and Engineer have overlapping deployment responsibilities | LOW | [ ] |
-| 26 | UNN-03 | Unnecessary | Product Manager agent overlaps with `/project:spec` command | LOW | [ ] |
+| 26 | UNN-03 | Unnecessary | Product Manager agent overlaps with `/project:spec` command | LOW | [x] |
 | 27 | GAP-07 | Gap | No monorepo/multi-project support | LOW | [ ] |
 
 ---
@@ -211,6 +211,17 @@ Clearly delineate:
 - Code Reviewer = code quality only (patterns, readability, DRY)
 - Security Auditor = security only (OWASP, CVE, dependency audit)
 
+**Resolution (2025-12-07):**
+Removed ALL security responsibilities from Code Reviewer:
+- Removed "Security (Basic Check)" checklist section
+- Removed security from description and intro
+- Removed "invoke Security Auditor" escalation path
+- Removed "Security vulnerabilities" from CRITICAL severity items
+- Removed security check from output format
+
+Code Reviewer now focuses ONLY on: quality, architecture compliance, performance, maintainability.
+Security Auditor owns ALL security checks - zero overlap.
+
 ---
 
 ### Priority 8: WST-02 - Redundant plan.md and spec.md
@@ -226,6 +237,16 @@ Both commands gather requirements and create specifications:
 
 **Recommendation:**
 Merge into single `spec.md` command outputting to `.claude/specs/`.
+
+**Resolution (2025-12-07):**
+Deleted `spec.md` command. `plan.md` is the single entry point for feature planning:
+- Invokes Product Manager (requirements, user stories)
+- Invokes Architect (technical design)
+- Creates task breakdown with estimates
+- Outputs to `.claude/plans/[feature].md`
+
+Updated references in: TEMPLATE-CLAUDE.md, route.md, resume.md, current-task.md, state-based-session-management.md
+UNN-03 is now obsolete (no `/project:spec` to overlap with).
 
 ---
 
@@ -518,6 +539,10 @@ Both create requirements and specifications.
 
 **Recommendation:**
 Clarify when to use agent vs command.
+
+**Resolution (2025-12-07):**
+OBSOLETE - `/project:spec` was deleted as part of WST-02 resolution.
+`/project:plan` now invokes Product Manager agent, so there's no overlap.
 
 ---
 

@@ -621,7 +621,7 @@ After Architect creates specifications, invoke Architect again to populate CLAUD
 
 Options:
 1. Start new task: /project:implement {feature}
-2. Create specification: /project:spec {feature}
+2. Plan feature: /project:plan {feature}
 3. Fix bug: /project:fix {bug description}
 4. Run tests: /project:test {test scope}
 
