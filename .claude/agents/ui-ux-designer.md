@@ -14,7 +14,7 @@ description: >
   - ALWAYS update ui-ux-specs.md and design-system.md with decisions made
 
   See .claude/patterns/context-injection.md for details.
-model: opus
+model: sonnet
 tools: Read, Write, Edit, Grep, Glob, Bash
 ---
 

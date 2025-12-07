@@ -4,7 +4,7 @@
 
 Debug and fix: **$ARGUMENTS**
 
-Follow the context injection pattern in `.claude/patterns/context-injection.md` and state-based session management pattern in `.claude/patterns/state-based-session-management.md`.
+Follow the context injection pattern in `.claude/patterns/context-injection.md`, state-based session management pattern in `.claude/patterns/state-based-session-management.md`, and model selection guide in `.claude/patterns/model-selection.md`.
 
 ---
 

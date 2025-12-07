@@ -82,12 +82,17 @@ fix(audit): quick security and functionality fixes
 
 ## Session 4: Optimization
 
-**Status:** PENDING
+**Status:** COMPLETE
+**Completed:** 2025-12-07
 
-| Issue | Description |
-|-------|-------------|
-| OPT-01 | Add model hints (opus/sonnet/haiku) per task type |
-| OPT-02 | Extend parallel execution to more commands |
+| Issue | Description | Status |
+|-------|-------------|--------|
+| OPT-01 | Add model hints (opus/sonnet/haiku) per task type | [x] DONE |
+| OPT-02 | Extend parallel execution to more commands | [x] Won't Fix |
+
+**Changes Made:**
+- OPT-01: Updated 3 agent models (PM→sonnet, UI/UX→sonnet, Documenter→haiku), created `.claude/patterns/model-selection.md`, updated 5 commands to reference guide
+- OPT-02: Won't Fix - analysis showed suggested parallelization violates data dependencies (Documenter needs Engineer output, Architect needs PM requirements)
 
 ---
 
@@ -244,8 +249,8 @@ Let's start with the first item.
 |---------|-----------|----------|--------|
 | Session 1 | 2025-12-07 | ~30 min | bd87a6e |
 | Session 2 | 2025-12-07 | ~15 min | a9a8c39 |
-| Session 3 | 2025-12-07 | ~15 min | pending |
-| Session 4 | - | - | - |
+| Session 3 | 2025-12-07 | ~15 min | e7bd91a |
+| Session 4 | 2025-12-07 | ~15 min | - |
 | Session 5 | - | - | - |
 | Session 6 | - | - | - |
 | Session 7 | - | - | - |

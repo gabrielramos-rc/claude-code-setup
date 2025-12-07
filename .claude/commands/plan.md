@@ -4,6 +4,8 @@
 
 You are coordinating a planning session for: **$ARGUMENTS**
 
+Follow the model selection guide in `.claude/patterns/model-selection.md` when invoking agents.
+
 ### Step 1: Requirements Gathering
 Use the **product-manager agent** to:
 - Understand the feature request

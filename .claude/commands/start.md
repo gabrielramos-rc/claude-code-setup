@@ -4,6 +4,8 @@
 
 Initialize a new project: **$ARGUMENTS**
 
+Follow the model selection guide in `.claude/patterns/model-selection.md` when invoking agents.
+
 ### Step 1: Understand the Project
 Ask clarifying questions:
 - What type of application? (web, mobile, API, CLI, etc.)
@@ -17,17 +19,33 @@ Use the **product-manager agent** to:
 - Create initial user stories
 - Identify key features
 
-### Step 3: Design Architecture
+### Step 3: Design User Experience (for UI projects)
+
+**If project has a user interface**, use the **ui-ux-designer agent** to:
+- Create user personas and journey maps
+- Design user flows and wireframes
+- Define design tokens (colors, typography, spacing)
+- Specify accessibility requirements
+- Write specifications to:
+  - `.claude/specs/ui-ux-specs.md`
+  - `.claude/specs/design-system.md`
+  - `.claude/specs/accessibility.md`
+
+**Skip this step for CLI, API-only, or backend projects.**
+
+### Step 4: Design Architecture
 Use the **architect agent** to:
 - Choose technology stack
 - Design folder structure
 - Create initial architecture
+- **For UI projects:** Design frontend architecture (component patterns, state management, styling)
 - Write specifications to:
   - `.claude/specs/requirements.md`
   - `.claude/specs/architecture.md`
   - `.claude/specs/tech-stack.md`
+  - `.claude/specs/frontend-architecture.md` (for UI projects)
 
-### Step 4: Auto-Populate CLAUDE.md
+### Step 5: Auto-Populate CLAUDE.md
 
 After Architect creates specifications, invoke Architect again to populate CLAUDE.md:
 
@@ -85,13 +103,13 @@ After Architect creates specifications, invoke Architect again to populate CLAUD
 - Single source of truth (specs → CLAUDE.md)
 - Future sessions have accurate project context
 
-### Step 5: Initialize Project
+### Step 6: Initialize Project
 Use the **engineer agent** to:
 - Create project structure
 - Set up initial files
 - Configure development environment
 
-### Step 6: Document
+### Step 7: Document
 Use the **documenter agent** to:
 - Create initial README.md
 - Document setup instructions
@@ -112,3 +130,8 @@ A fully initialized project with:
   - requirements.md
   - architecture.md
   - tech-stack.md
+  - **For UI projects:**
+    - ui-ux-specs.md (user flows, wireframes)
+    - design-system.md (design tokens, component specs)
+    - accessibility.md (WCAG requirements)
+    - frontend-architecture.md (component patterns, state management)

@@ -29,8 +29,8 @@
 | 6 | SEC-04 | Security | Bash commands use unsanitized user-provided paths/patterns | MEDIUM | [x] |
 | 7 | WST-01 | Waste | Duplicate functionality between Security Auditor and Code Reviewer (both check security) | MEDIUM | [x] |
 | 8 | WST-02 | Waste | Redundant commands: `plan.md` and `spec.md` serve nearly identical purposes | MEDIUM | [x] |
-| 9 | OPT-01 | Optimization | Opus model overused - Haiku sufficient for docs/simple tasks | MEDIUM | [ ] |
-| 10 | OPT-02 | Optimization | Parallel agent execution underutilized (only `implement.md` and `fix.md`) | MEDIUM | [ ] |
+| 9 | OPT-01 | Optimization | Opus model overused - Haiku sufficient for docs/simple tasks | MEDIUM | [x] |
+| 10 | OPT-02 | Optimization | Parallel agent execution underutilized (only `implement.md` and `fix.md`) | MEDIUM | [x] Won't Fix |
 | 11 | GAP-02 | Gap | No integration/E2E testing command | MEDIUM | [ ] |
 | 12 | GAP-03 | Gap | No rollback/recovery workflow (`/project:rollback` or `/project:undo`) | MEDIUM | [ ] |
 | 13 | GAP-04 | Gap | No API Designer agent for OpenAPI specs, versioning, rate limiting | MEDIUM | [ ] |
@@ -265,6 +265,22 @@ Add model hints per task type:
 - Code generation → sonnet
 - Simple formatting → haiku
 
+**Resolution (2025-12-07):**
+Updated agent default models:
+- Product Manager: opus → sonnet (structured output, not complex reasoning)
+- UI/UX Designer: opus → sonnet (pattern-based design specs)
+- Documenter: sonnet → haiku (simple formatting tasks)
+- Architect: kept opus (needs complex reasoning)
+
+Created `.claude/patterns/model-selection.md` with:
+- Default model table by agent
+- Override criteria (when to use opus/sonnet/haiku)
+- Decision flowchart
+- Cost-benefit summary
+
+Updated commands to reference model selection guide:
+- `implement.md`, `fix.md`, `test.md`, `start.md`, `plan.md`
+
 ---
 
 ### Priority 10: OPT-02 - Parallel Execution Underutilized
@@ -280,6 +296,17 @@ Only `implement.md` and `fix.md` use parallel validation.
 Also parallelize in:
 - `start.md`: Product Manager + Architect partially parallel
 - `plan.md`: Requirements + initial design exploration
+
+**Resolution (2025-12-07): Won't Fix**
+
+Analysis revealed that suggested parallelization violates data dependencies:
+
+- `start.md`: Documenter needs Engineer's output (project structure, dependencies) before writing docs. Running in parallel would document a non-existent project.
+- `plan.md`: Architect needs Product Manager's requirements before designing. Sequential by nature.
+
+The existing parallel validation in `implement.md` and `fix.md` works because Tester, Security, and Code Reviewer are independent consumers of the same completed implementation.
+
+**Conclusion:** Current parallelization is appropriate. No changes needed.
 
 ---
 

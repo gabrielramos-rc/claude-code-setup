@@ -4,7 +4,7 @@
 
 Create or run tests for: **$ARGUMENTS**
 
-Follow the context injection pattern in `.claude/patterns/context-injection.md`.
+Follow the context injection pattern in `.claude/patterns/context-injection.md` and model selection guide in `.claude/patterns/model-selection.md`.
 
 ---
 
