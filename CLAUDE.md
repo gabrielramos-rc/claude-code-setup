@@ -13,8 +13,18 @@ This is a **Claude Code framework repository** - a meta-development system for c
 This framework implements a pattern where:
 1. **Slash commands** (`.claude/commands/*.md`) define high-level workflows
 2. **Specialized agents** (`.claude/agents/*.md`) handle specific development roles
-3. **State directories** (`.claude/plans/`, `.claude/specs/`) persist decisions and context
+3. **State directories** (`.claude/plans/`, `.claude/specs/`, `.claude/state/`) persist decisions and context
 4. Commands orchestrate multiple agents in sequence to accomplish complex tasks
+
+### Beta v0.2 Enhancements (Safety-First Agentic Patterns)
+
+**New in v0.2:**
+- **Task Routing** - Analyze complexity before choosing workflow (cosmetic/feature/system)
+- **Bounded Reflexion** - Commands auto-retry up to 3 times, max 5 total across workflow
+- **Human-in-the-Loop Gatekeeping** - Code review requires manual approval for fixes
+- **Artifact Priority System** - Agents read `.claude/specs/` to maintain architectural decisions
+- **Global Retry Coordination** - Prevents infinite loops with cumulative retry tracking
+- **Comprehensive Testing** - 13 behavioral test scenarios validate framework behavior
 
 ### Agent System Design
 
@@ -51,6 +61,12 @@ Commands use `$ARGUMENTS` variable and follow this structure:
 
 Commands implement **staged workflows**: plan → design → implement → verify → document
 
+**Beta v0.2 Additions:**
+- **Reflexion loops** - Commands auto-retry failed operations (max 3 attempts)
+- **Global retry counter** - `.claude/state/retry-counter.md` tracks cumulative retries
+- **Failure escalation** - Clear diagnostic messages when automation fails
+- **Routing command** - `/project:route` recommends appropriate workflow based on complexity
+
 ## Framework Extension Guidelines
 
 ### When Enhancing This Framework
@@ -79,6 +95,8 @@ When enhancing this framework, optimize for:
 4. **Incremental verification** - Each step validated before proceeding
 5. **Production quality gates** - Security, testing, and review as mandatory steps
 6. **Minimal coordination overhead** - Commands should orchestrate smoothly without user intervention
+7. **Safety bounds** (v0.2+) - Prevent infinite loops with retry limits and user gates
+8. **Artifact priority** (v0.2+) - Persistent context trumps conversation when conflicts arise
 
 ## Common Development Tasks
 
@@ -118,11 +136,23 @@ This framework should evolve toward:
 
 ## Key Files
 
+### Core Framework
+- `CLAUDE.md` - This file (framework documentation for meta-development)
 - `TEMPLATE-CLAUDE.md` - Template for projects using this framework (to be customized per project)
 - `.claude/commands/start.md` - Project initialization workflow (creates project-specific CLAUDE.md)
 - `.claude/agents/*.md` - Agent definitions (the core reusable components)
+
+### State & Persistence
 - `.claude/plans/` - Persistent planning outputs
-- `.claude/specs/` - Detailed specifications
+- `.claude/specs/` - Detailed specifications (requirements, architecture, tech-stack)
+- `.claude/state/` - Runtime state (retry counter, workflow tracking)
+
+### Beta v0.2 Additions
+- `.claude/commands/route.md` - Task complexity analyzer and workflow router
+- `.claude/patterns/reflexion.md` - Shared retry pattern documentation
+- `.claude/docs/artifact-system.md` - Complete artifact priority protocol
+- `.claude/docs/beta-v0.2-metrics.md` - Success metrics and acceptance criteria
+- `.claude/tests/beta-v0.2-scenarios.md` - 13 behavioral test scenarios
 
 ## Notes on Framework Usage
 

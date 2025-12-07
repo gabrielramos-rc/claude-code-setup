@@ -26,10 +26,35 @@ Use the **engineer agent** to:
    - Verify each chunk works before proceeding
    - Follow existing code patterns
 
-4. **Verify**
-   - Run any existing tests
-   - Test the new functionality manually
-   - Check for errors
+4. **Verify & Loop (Max 3 Attempts)**
+
+Follow the reflexion loop pattern in `.claude/patterns/reflexion.md`.
+
+Use the **tester agent** to run tests.
+
+**Reflexion Protocol:**
+
+**Attempt 1:** If tests fail, read errors, identify root cause, fix code, retry.
+**Attempt 2:** If tests fail again, read errors, identify root cause, fix code, retry.
+**Attempt 3:** If tests fail again, **STOP**.
+
+**Failure Termination:**
+
+If tests fail after Attempt 3, output:
+
+```
+🔴 **Automated fixes failed after 3 attempts**
+
+**Last Error:**
+[error details]
+
+**Manual Intervention Required:**
+- Review error log above
+- Recommended action: [specific suggestion]
+- Manually fix [specific file:line]
+```
+
+Do NOT attempt a 4th fix.
 
 ### Output
 After implementation:
