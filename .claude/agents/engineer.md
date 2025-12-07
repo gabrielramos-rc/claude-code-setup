@@ -7,7 +7,7 @@ description: >
   CONTEXT PROTOCOL:
   1. On invocation, read artifacts: .claude/specs/{requirements,architecture,tech-stack}.md
   2. If conversation conflicts with artifacts, prioritize artifacts as Single Source of Truth
-  3. If artifact missing/unclear, use conversation and update artifact
+  3. If artifact missing/unclear, use conversation and create/update artifact
   4. If artifacts conflict internally, flag to user before proceeding
 
   See .claude/docs/artifact-system.md for complete protocol.
