@@ -26,6 +26,26 @@ This framework implements a pattern where:
 - **Global Retry Coordination** - Prevents infinite loops with cumulative retry tracking
 - **Comprehensive Testing** - 13 behavioral test scenarios validate framework behavior
 
+### v0.3 Phase 1: Command-Level Context Injection (Token Optimization)
+
+**Status:** ✅ Implemented (2025-12-06)
+
+**New in v0.3 Phase 1:**
+- **Context Injection Pattern** - Commands load specs ONCE, inject into all agent prompts (`.claude/patterns/context-injection.md`)
+- **XML-Structured Documents** - Research-backed format with documents at TOP of prompts (30% performance boost)
+- **File Tree Generation** - Generate project structure once per command, eliminate ls/find/tree redundancy
+- **Updated Command Workflows** - implement.md, fix.md, test.md now use Step 0 for context loading
+- **Parallel Quality Validation** - Tester + Security + Code Reviewer run concurrently
+- **Agent Protocol v0.3** - Simplified CONTEXT PROTOCOL with clear "DO NOT re-read" instructions
+
+**Expected Impact:**
+- 20-30% token reduction from eliminating 28+ redundant spec reads
+- 10-15% token reduction from eliminating 60+ redundant Bash file discovery commands
+- 30% performance improvement from document ordering (Anthropic research)
+- **Combined: 40-50% efficiency gain**
+
+**Pattern Reference:** See `.claude/patterns/context-injection.md` for complete implementation guide
+
 ### Agent System Design
 
 Agents are defined with YAML frontmatter containing:
