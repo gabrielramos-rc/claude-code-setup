@@ -119,11 +119,15 @@ Output: Path to `.claude/state/fix-notes.md`
 
 ---
 
-## Step 2: Verify Fix (Reflexion Loop)
+## Step 2: Quality Validation (PARALLEL EXECUTION)
 
-Follow the reflexion loop pattern in `.claude/patterns/reflexion.md`.
+Follow the reflexion loop pattern in `.claude/patterns/reflexion.md` and parallel quality validation pattern in `.claude/patterns/parallel-quality-validation.md`.
 
 Read `.claude/state/fix-notes.md` to understand what was fixed.
+
+**PARALLEL EXECUTION:** Invoke Tester + Code Reviewer concurrently (use Task tool in single message).
+
+### 2.1: Tester Agent
 
 Use **tester agent** with context:
 
@@ -185,9 +189,9 @@ Do NOT attempt a 4th fix.
 
 ---
 
-## Step 3: Code Review
+### 2.2: Code Reviewer Agent
 
-If fix passes tests, invoke **code-reviewer agent** with context:
+Invoke **code-reviewer agent** IN PARALLEL with Tester (same message):
 
 ```
 <documents>
@@ -218,6 +222,30 @@ Your task: Review the bug fix for:
 
 Output review to: `.claude/state/code-review-findings.md`
 ```
+
+**Wait for BOTH agents to complete before proceeding.**
+
+---
+
+## Step 3: Check Quality Results
+
+Read both result files:
+- `.claude/state/test-results.md`
+- `.claude/state/code-review-findings.md`
+
+### Decision Logic
+
+**If tests fail:**
+- Follow reflexion protocol (max 3 attempts) from Step 2.1
+- Invoke Engineer with test failure context
+- Return to Step 2
+
+**If tests pass but review identifies issues:**
+- Invoke Engineer with review findings as context
+- Return to Step 2
+
+**If both pass:**
+- Proceed to Output
 
 ---
 

@@ -140,6 +140,17 @@ Output: Path to `.claude/state/implementation-notes.md`
 
 After Engineer completes implementation, read `.claude/state/implementation-notes.md` to understand what was built.
 
+**PARALLEL EXECUTION (50% time savings):**
+
+Follow the parallel quality validation pattern in `.claude/patterns/parallel-quality-validation.md`.
+
+**CRITICAL:** Invoke all three Task tools in a SINGLE message to run agents concurrently:
+- Tester Agent (tests/)
+- Security Auditor Agent (security scans)
+- Code Reviewer Agent (quality review)
+
+**Expected time:** ~5 minutes (vs 10 minutes sequential)
+
 **Invoke these three agents IN PARALLEL using Task tool:**
 
 ### 2.1: Tester Agent
