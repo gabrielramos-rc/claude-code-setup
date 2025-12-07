@@ -46,6 +46,53 @@ This framework implements a pattern where:
 
 **Pattern Reference:** See `.claude/patterns/context-injection.md` for complete implementation guide
 
+**Phase 1 Week 2: Role Enforcement** - ✅ Implemented (2025-12-06)
+
+All 8 agents updated with comprehensive role enforcement guidelines to prevent boundary violations:
+
+**File Boundary Enforcement:**
+- **Architect** - ONLY `.claude/specs/*`, NEVER `src/*` or `tests/*`
+- **Engineer** - ONLY `src/*` and `tests/*`, NEVER `.claude/specs/*`
+- **Tester** - ONLY `tests/*` and `.claude/state/test-results.md`
+- **Security Auditor** - Bash for scans, `.claude/state/security-findings.md` for reports
+- **Code Reviewer** - Read-only analysis (Read/Grep/Glob ONLY, NO Bash)
+- **Documenter** - ONLY `docs/*` and `README.md`, NEVER `src/*` or `.claude/specs/*`
+- **DevOps** - CI/CD configs, deployment files, **coordinates git but NEVER centralizes commits**
+- **Product Manager** - ONLY `.claude/specs/requirements.md` and `.claude/plans/backlog.md`
+
+**Distributed Git Workflow:**
+- Each agent commits their own work (no centralization to DevOps)
+- Clear commit message conventions: `feat:`, `fix:`, `test:`, `docs:`, `arch:`, `devops:`, `security:`, `review:`
+- DevOps coordinates strategy in `.claude/state/git-strategy.md` but doesn't make commits for other agents
+
+**Agent Protocol Pattern:**
+All agents now follow standardized structure:
+1. **What You Write** - Clear file boundaries with ✅ DO write locations
+2. **What You DON'T Write** - Explicit ❌ NEVER write locations
+3. **Tool Usage Guidelines** - Intent-based usage (not restrictions)
+4. **Process/Workflow** - Step-by-step agent process
+5. **State Communication** - How agents coordinate via `.claude/state/*`
+6. **Git Commits** - Distributed approach with agent-specific prefixes
+7. **When to Invoke Other Agents** - Escalation paths
+8. **Examples (Good vs Bad)** - Concrete examples of proper boundaries
+
+**Supporting Documentation:**
+- `.claude/docs/agent-memory-guidelines.md` - Prevent ad-hoc memory file proliferation
+- Artifact ownership table (16 standard artifacts)
+- File organization table (7 directories with clear purposes)
+
+**Problems Solved:**
+- CON-11: Architect creating code → Engineer deleting → recreating (boundary violations)
+- CON-04/CON-08: Ad-hoc memory file proliferation (PROJECT_INITIALIZATION_SUMMARY.md, etc.)
+- Unclear agent responsibilities and file ownership
+- Distributed git workflow prevents centralization confusion
+
+**Expected Impact:**
+- Prevent boundary violations between agents
+- Clear agent responsibilities and file ownership
+- Smooth agent-to-agent coordination via state files
+- No duplicate work or conflicting changes
+
 ### Agent System Design
 
 Agents are defined with YAML frontmatter containing:
@@ -173,6 +220,13 @@ This framework should evolve toward:
 - `.claude/docs/artifact-system.md` - Complete artifact priority protocol
 - `.claude/docs/beta-v0.2-metrics.md` - Success metrics and acceptance criteria
 - `.claude/tests/beta-v0.2-scenarios.md` - 13 behavioral test scenarios
+
+### v0.3 Phase 1 Additions
+- `.claude/patterns/context-injection.md` - Command-level context injection pattern (1040 lines)
+- `.claude/docs/agent-memory-guidelines.md` - Prevent ad-hoc memory file proliferation (306 lines)
+- Updated commands: `implement.md`, `fix.md`, `test.md` with Step 0 context loading
+- Updated all 8 agents with role enforcement guidelines (2500+ total lines)
+- Agent protocol v0.3 with file boundaries and distributed git workflow
 
 ## Notes on Framework Usage
 
