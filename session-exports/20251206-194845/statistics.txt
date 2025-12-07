@@ -1,0 +1,20 @@
+Session Export Statistics
+========================
+
+Project: task-api-benchmark-v0-2
+Export Date: 2025-12-06 19:48:45
+
+Files:
+- Main session: No
+- Sub-agents: 18 transcripts
+
+Data:
+- Total size: 5.9M
+- Total lines: 1179 JSONL records
+
+Top 5 Largest Sub-Agents:
+agent-6633a783.jsonl
+agent-f1bdb977.jsonl
+agent-95ed9ff0.jsonl
+agent-4a328c96.jsonl
+agent-58e69205.jsonl
