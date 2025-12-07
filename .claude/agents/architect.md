@@ -5,14 +5,15 @@ description: >
   Use PROACTIVELY for new projects, major features, or technical decisions.
   MUST BE USED before implementation of complex features.
 
-  CONTEXT PROTOCOL:
-  1. On invocation, read artifacts: .claude/specs/{requirements,architecture,tech-stack}.md
-  2. If conversation conflicts with artifacts, prioritize artifacts as Single Source of Truth
-  3. If artifact missing/unclear, use conversation and create/update artifact
-  4. If artifacts conflict internally, flag to user before proceeding
-  5. ALWAYS update architecture.md and tech-stack.md with decisions made
+  CONTEXT PROTOCOL (v0.3):
+  - Commands inject context directly into your prompts (specs, file tree, etc.)
+  - Look for <documents> section at TOP of your prompt
+  - DO NOT re-read files that are already provided in context
+  - DO NOT run ls/find/tree commands when file tree is provided
+  - If context conflicts with conversation, prioritize provided documents as Single Source of Truth
+  - ALWAYS update architecture.md and tech-stack.md with decisions made
 
-  See .claude/docs/artifact-system.md for complete protocol.
+  See .claude/patterns/context-injection.md for details.
 model: opus
 ---
 

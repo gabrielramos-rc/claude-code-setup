@@ -4,44 +4,163 @@
 
 Debug and fix: **$ARGUMENTS**
 
-### Investigation Phase
+Follow the context injection pattern in `.claude/patterns/context-injection.md`.
+
+---
+
+## Step 0: Load Project Context
+
+Before invoking any agents, gather all shared context.
+
+### 1. Read Core Specifications
+
+Read specifications if they exist:
+- `.claude/specs/requirements.md`
+- `.claude/specs/architecture.md`
+- `.claude/specs/tech-stack.md`
+
+### 2. Generate Project File Tree
+
+```bash
+tree -L 3 -I 'node_modules|.git|dist|build|coverage' > /tmp/project-tree.txt
+```
+
+### 3. Read Error Context
+
+If error logs or test failures are available, capture them.
+
+---
+
+## Step 1: Investigate Issue
+
+Use the **engineer agent** with context injection:
+
+```
+<documents>
+  <document index="1">
+    <source>.claude/specs/architecture.md</source>
+    <document_content>
+    {{ARCHITECTURE_CONTENT}}
+    </document_content>
+  </document>
+
+  <document index="2">
+    <source>Project File Tree</source>
+    <document_content>
+    {{PROJECT_TREE}}
+    </document_content>
+  </document>
+
+  <document index="3">
+    <source>Error Context</source>
+    <document_content>
+    {{ERROR_LOGS_OR_DESCRIPTION}}
+    </document_content>
+  </document>
+</documents>
+
+You are the Engineer agent.
+
+**Context already loaded above - DO NOT re-read these files.**
+**File tree shows project structure - DO NOT run ls/find commands.**
+
+Your task: Investigate and diagnose this issue: $ARGUMENTS
+
+Follow these steps:
 
 1. **Reproduce the Issue**
-   - Understand the expected vs actual behavior
+   - Understand expected vs actual behavior
    - Identify steps to reproduce
+   - Run tests if applicable
 
 2. **Analyze**
-   - Search codebase for relevant code
+   - Search codebase for relevant code using Grep tool
    - Identify potential root causes
-   - Check logs and error messages
+   - Check error messages and stack traces
 
 3. **Diagnose**
-   - Narrow down to the specific cause
+   - Narrow down to specific cause
    - Understand why the bug exists
+   - Document root cause in `.claude/state/diagnosis.md`
 
-### Fix Phase
-
-Use the **engineer agent** to:
-
-1. **Plan the Fix**
-   - Describe the fix approach
+4. **Plan the Fix**
+   - Describe fix approach
    - Identify files to modify
    - Consider side effects
 
-2. **Implement**
+5. **Implement Fix**
    - Make minimal, targeted changes
    - Preserve existing functionality
    - Add error handling if missing
+   - Follow architecture patterns from specs above
 
-3. **Verify & Loop (Max 3 Attempts)**
+6. **Document Fix**
+   - Write to `.claude/state/fix-notes.md`:
+     - Root cause explanation
+     - Changes made
+     - Files modified
+     - How to verify the fix
+
+7. **Commit Your Work**
+   ```bash
+   git add src/ tests/
+   git commit -m "fix: resolve {issue}
+
+   - Root cause: {explanation}
+   - Solution: {what was done}
+
+   🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+   Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
+   ```
+
+Output: Path to `.claude/state/fix-notes.md`
+```
+
+---
+
+## Step 2: Verify Fix (Reflexion Loop)
 
 Follow the reflexion loop pattern in `.claude/patterns/reflexion.md`.
 
-Use the **tester agent** to run tests.
+Read `.claude/state/fix-notes.md` to understand what was fixed.
 
-**Reflexion Protocol (for fix command):**
+Use **tester agent** with context:
 
-**Attempt 1:** Apply fix, run tests. If tests fail, analyze why fix didn't work, adjust.
+```
+<documents>
+  <document index="1">
+    <source>.claude/state/fix-notes.md</source>
+    <document_content>
+    {{FIX_NOTES}}
+    </document_content>
+  </document>
+
+  <document index="2">
+    <source>Project File Tree</source>
+    <document_content>
+    {{PROJECT_TREE}}
+    </document_content>
+  </document>
+</documents>
+
+You are the Tester agent.
+
+**Context already loaded above - DO NOT re-read files.**
+
+Your task: Run tests to verify the fix works.
+
+Focus on:
+- Tests related to the bug that was fixed
+- Regression tests to ensure no new issues
+- Edge cases related to the fix
+
+Output test results to: `.claude/state/test-results.md`
+```
+
+### Reflexion Protocol (Max 3 Attempts)
+
+**Attempt 1:** If tests fail, read errors, analyze why fix didn't work, adjust.
 **Attempt 2:** If tests fail again, analyze deeper issue, adjust fix.
 **Attempt 3:** If tests fail again, **STOP**.
 
@@ -57,15 +176,58 @@ If tests fail after Attempt 3, output:
 
 **Manual Intervention Required:**
 - Review error log above
+- Review detailed diagnosis in .claude/state/diagnosis.md
 - Recommended action: [specific suggestion]
 - Run `/project:debug` OR manually fix [specific file:line]
 ```
 
 Do NOT attempt a 4th fix.
 
-### Output
+---
+
+## Step 3: Code Review
+
+If fix passes tests, invoke **code-reviewer agent** with context:
+
+```
+<documents>
+  <document index="1">
+    <source>.claude/specs/architecture.md</source>
+    <document_content>
+    {{ARCHITECTURE_CONTENT}}
+    </document_content>
+  </document>
+
+  <document index="2">
+    <source>.claude/state/fix-notes.md</source>
+    <document_content>
+    {{FIX_NOTES}}
+    </document_content>
+  </document>
+</documents>
+
+You are the Code Reviewer agent.
+
+**Context already loaded above - DO NOT re-read files.**
+
+Your task: Review the bug fix for:
+- Correctness
+- Code quality
+- Potential side effects
+- Adherence to architecture patterns
+
+Output review to: `.claude/state/code-review-findings.md`
+```
+
+---
+
+## Output
+
 Provide:
-- Root cause explanation
-- Changes made
-- How to verify the fix
-- Suggestions to prevent similar issues
+- **Root Cause:** What caused the bug (from `.claude/state/diagnosis.md`)
+- **Changes Made:** Files modified and what was done
+- **Verification:** Test results showing fix works
+- **Prevention:** Suggestions to prevent similar issues
+- **Git Commit:** Changes committed with descriptive message
+
+**Ready for next command.**
