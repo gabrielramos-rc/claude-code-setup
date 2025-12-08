@@ -37,7 +37,7 @@ After attempt 3 failure, output:
 **Manual Intervention Required:**
 1. Review error log above
 2. Recommended action: [specific suggestion]
-3. Run `/project:debug` for detailed analysis OR manually fix [specific file:line]
+3. Manually fix [specific file:line]
 ```
 
 Do NOT attempt a 4th fix.

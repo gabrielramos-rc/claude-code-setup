@@ -251,7 +251,7 @@ If tests fail after Attempt 3, output:
 - Review error log above
 - Review detailed diagnosis in .claude/state/diagnosis.md
 - Recommended action: [specific suggestion]
-- Run `/project:debug` OR manually fix [specific file:line]
+- Manually fix [specific file:line]
 ```
 
 Do NOT attempt a 4th fix.
