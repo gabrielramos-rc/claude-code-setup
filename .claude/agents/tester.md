@@ -317,7 +317,104 @@ All tests passing ✅ PASS
 
 ---
 
+## Performance Testing
+
+Performance is a cross-cutting concern. As Tester, you own load testing and performance regression tests. See `.claude/patterns/performance.md` for comprehensive guidance.
+
+### Load Testing
+
+**When to load test:**
+- Before launch or major releases
+- After significant infrastructure changes
+- When performance requirements are specified
+
+**Tool: k6 (recommended)**
+
+```javascript
+// tests/load/api.js
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+
+export const options = {
+  stages: [
+    { duration: '1m', target: 50 },   // Ramp up
+    { duration: '3m', target: 50 },   // Sustain
+    { duration: '1m', target: 0 },    // Ramp down
+  ],
+  thresholds: {
+    http_req_duration: ['p(95)<200'], // 95% under 200ms
+    http_req_failed: ['rate<0.01'],   // <1% errors
+  },
+};
+
+export default function () {
+  const res = http.get('http://localhost:3000/api/users');
+  check(res, {
+    'status is 200': (r) => r.status === 200,
+  });
+  sleep(1);
+}
+```
+
+```bash
+# Run load test
+k6 run tests/load/api.js
+```
+
+### Performance Regression Tests
+
+Add performance assertions to regular tests:
+
+```typescript
+// tests/performance.test.ts
+describe('Performance', () => {
+  it('processes 1000 items under 100ms', async () => {
+    const items = generateItems(1000);
+    const start = performance.now();
+    await processItems(items);
+    const duration = performance.now() - start;
+    expect(duration).toBeLessThan(100);
+  });
+});
+```
+
+### Performance Test Results
+
+Document in `.claude/state/test-results.md`:
+
+```markdown
+## Performance Test Results
+
+### Load Test: API Users Endpoint
+- **Date:** 2025-12-07
+- **Duration:** 5 minutes
+- **Peak VUs:** 50
+
+| Metric | Value | Threshold | Status |
+|--------|-------|-----------|--------|
+| P95 latency | 145ms | <200ms | PASS |
+| P99 latency | 280ms | <500ms | PASS |
+| Error rate | 0.2% | <1% | PASS |
+| Throughput | 450 req/s | - | - |
+
+**Verdict:** PASS
+```
+
+### Performance Testing Checklist
+
+- [ ] Load test critical API endpoints
+- [ ] Set thresholds based on requirements (from Architect)
+- [ ] Test with realistic data volumes
+- [ ] Document baseline performance for regression tracking
+- [ ] Run performance tests in CI (for regressions)
+
+**Deep dive:** See `.claude/patterns/performance.md` for comprehensive patterns.
+
+---
+
 ## Git Commits
+
+Follow the git workflow pattern in `.claude/patterns/git-workflow.md`.
 
 Commit your tests after creating/updating them:
 

@@ -33,21 +33,21 @@
 | 10 | OPT-02 | Optimization | Parallel agent execution underutilized (only `implement.md` and `fix.md`) | MEDIUM | [x] Won't Fix |
 | 11 | GAP-02 | Gap | No integration/E2E testing command | MEDIUM | [x] |
 | 12 | GAP-03 | Gap | No rollback/recovery workflow (`/project:rollback` or `/project:undo`) | MEDIUM | [x] |
-| 13 | GAP-04 | Gap | No API Designer agent for OpenAPI specs, versioning, rate limiting | MEDIUM | [ ] |
-| 14 | GAP-05 | Gap | No Database/Migration agent for schema design and migrations | MEDIUM | [ ] |
-| 15 | GAP-06 | Gap | No Performance agent for profiling, bundle analysis, load testing | MEDIUM | [ ] |
-| 16 | PRD-01 | Production | Benchmark system exists but has no automated regression tracking | MEDIUM | [ ] |
-| 17 | PRD-02 | Production | Test scenarios in `beta-v0.2-scenarios.md` are not executable | MEDIUM | [ ] |
-| 18 | SEC-05 | Security | No rate limiting/cooldown on reflexion loops | LOW | [ ] |
+| 13 | GAP-04 | Gap | No API Designer agent for OpenAPI specs, versioning, rate limiting | MEDIUM | [x] |
+| 14 | GAP-05 | Gap | No Database/Migration agent for schema design and migrations | MEDIUM | [x] |
+| 15 | GAP-06 | Gap | No Performance agent for profiling, bundle analysis, load testing | MEDIUM | [x] |
+| 16 | PRD-01 | Production | Benchmark system exists but has no automated regression tracking | MEDIUM | [x] |
+| 17 | PRD-02 | Production | Test scenarios in `beta-v0.2-scenarios.md` are not executable | MEDIUM | [x] |
+| 18 | SEC-05 | Security | No rate limiting/cooldown on reflexion loops | LOW | [x] Won't Fix |
 | 19 | BUG-02 | Bug | Broken emoji characters in `resume.md` (lines 15-16 show `�`) | LOW | [x] |
-| 20 | WST-03 | Waste | Over-engineered checkpointing with arbitrary percentages (0%→15%→40%→70%→90%→100%) | LOW | [ ] |
-| 21 | WST-04 | Waste | Unused state files created but rarely read: `diagnosis.md`, `fix-notes.md`, `test-quality-review.md`, `git-strategy.md` | LOW | [ ] |
-| 22 | OPT-03 | Optimization | File tree regenerated every command even when unchanged | LOW | [ ] |
-| 23 | OPT-04 | Optimization | No agent caching - specs re-read even when unchanged | LOW | [ ] |
-| 24 | UNN-01 | Unnecessary | Consider merging Tester + Code Reviewer into Quality Agent | LOW | [ ] |
-| 25 | UNN-02 | Unnecessary | DevOps and Engineer have overlapping deployment responsibilities | LOW | [ ] |
+| 20 | WST-03 | Waste | Over-engineered checkpointing with arbitrary percentages (0%→15%→40%→70%→90%→100%) | LOW | [x] |
+| 21 | WST-04 | Waste | Unused state files created but rarely read: `diagnosis.md`, `fix-notes.md`, `test-quality-review.md`, `git-strategy.md` | LOW | [x] |
+| 22 | OPT-03 | Optimization | File tree regenerated every command even when unchanged | LOW | [x] |
+| 23 | OPT-04 | Optimization | No agent caching - specs re-read even when unchanged | LOW | [x] |
+| 24 | UNN-01 | Unnecessary | Consider merging Tester + Code Reviewer into Quality Agent | LOW | [x] Won't Fix |
+| 25 | UNN-02 | Unnecessary | DevOps and Engineer have overlapping deployment responsibilities | LOW | [x] Won't Fix |
 | 26 | UNN-03 | Unnecessary | Product Manager agent overlaps with `/project:spec` command | LOW | [x] |
-| 27 | GAP-07 | Gap | No monorepo/multi-project support | LOW | [ ] |
+| 27 | GAP-07 | Gap | No monorepo/multi-project support | LOW | [x] Documented |
 
 ---
 
@@ -401,6 +401,40 @@ Currently buried in Architect's responsibilities.
 **Recommendation:**
 Create dedicated API Designer agent or extend Architect.
 
+**Resolution (2025-12-07):**
+Extended Architect agent with comprehensive "API Design Protocol" section (~400 lines):
+
+**Decision:** Enhance Architect rather than create new agent because:
+- API design IS architecture (system boundaries)
+- Avoids agent proliferation and coordination overhead
+- Keeps related concerns together
+
+**Changes to Architect agent:**
+1. **New file outputs:**
+   - `openapi.yaml` (project root) - REST API specs
+   - `schema.graphql` (project root) - GraphQL schemas
+   - `asyncapi.yaml` (project root) - WebSocket/event specs
+
+2. **API Design Protocol section covering:**
+   - REST API design (versioning, resources, pagination, errors, rate limiting)
+   - GraphQL design (schema-first, Relay pagination, error handling)
+   - Real-time APIs (WebSocket vs SSE vs polling, event patterns)
+   - OpenAPI 3.x template with full example
+   - GraphQL schema template with Relay patterns
+   - AsyncAPI template for event-driven APIs
+
+3. **Validation tooling added to Bash:**
+   - `npx @redocly/cli lint openapi.yaml`
+   - `npx spectral lint openapi.yaml`
+   - `npx graphql-inspector validate schema.graphql`
+   - `npx @asyncapi/cli validate asyncapi.yaml`
+
+4. **Output format updated** with API-specific deliverables
+
+**Key clarification made:**
+- `.claude/specs/` = Agent memory (design decisions)
+- Project root = Machine-readable deliverables (openapi.yaml, schema.graphql)
+
 ---
 
 ### Priority 14: GAP-05 - No Database/Migration Agent
@@ -419,6 +453,48 @@ Architect mentions "data model" but no dedicated tooling.
 
 **Recommendation:**
 Create Database Architect agent or extend Architect with database section.
+
+**Resolution (2025-12-07):**
+Implemented hybrid approach: Architect designs, Engineer implements.
+
+**Decision:** No new agent. Database work follows existing Architect→Engineer flow:
+- Data model design is an architectural decision
+- Schema/migration implementation is engineering work
+- Keeps agent count stable, reduces coordination overhead
+
+**Changes to Architect agent (~160 lines):**
+- Added "Data Model Design" section
+- Database technology selection guide (SQL, Document, Key-Value, Graph, Time-Series, Vector)
+- Entity-Relationship design patterns
+- Index and constraint design
+- Output: `.claude/specs/data-model.md`
+- Checklist for handoff to Engineer
+
+**Changes to Engineer agent (~220 lines):**
+
+1. **Database Implementation Protocol:**
+   - ORM/tool detection table (Prisma, Drizzle, TypeORM, Knex, Sequelize, Django, SQLAlchemy, raw SQL)
+   - Prisma implementation patterns with schema examples
+   - Drizzle implementation patterns with schema examples
+   - Raw SQL migration patterns
+   - Migration best practices (naming, safe migrations, data migrations)
+   - Validation commands
+   - Implementation checklist
+
+2. **Data Engineering Protocol (for complex cases):**
+   - ETL/ELT pipeline patterns
+   - Scheduled job patterns (cron)
+   - Query optimization (cursor pagination, keyset pagination)
+   - Bulk operations (batch updates, upserts)
+   - Data validation with Zod
+   - Data engineering commands (backup, restore, analyze)
+   - Data engineering checklist
+
+**Workflow:**
+1. Architect designs data model → `.claude/specs/data-model.md`
+2. Engineer implements schema using appropriate ORM
+3. Engineer creates migrations
+4. Engineer implements data pipelines (if needed)
 
 ---
 
@@ -439,6 +515,47 @@ No agent handles:
 **Recommendation:**
 Create Performance Engineer agent.
 
+**Resolution (2025-12-07):**
+Implemented distributed approach: performance as cross-cutting concern across multiple agents.
+
+**Decision:** No new Performance agent. Instead:
+- Performance is everyone's responsibility
+- Each agent gets role-specific performance guidance
+- Central pattern file as single source of truth
+
+**Created: `.claude/patterns/performance.md` (~350 lines)**
+Comprehensive reference covering:
+- Performance requirements (Architect focus)
+- Code optimization (Engineer focus)
+- Load testing (Tester focus)
+- Frontend performance / Core Web Vitals (UI/UX focus)
+- CI performance budgets (DevOps focus)
+- Performance code review (Code Reviewer focus)
+- Commands reference
+
+**Distributed sections added to agents:**
+
+| Agent | Section Added | Lines |
+|-------|---------------|-------|
+| Architect | Performance Design | ~60 |
+| Engineer | Performance Implementation | ~70 |
+| Tester | Performance Testing | ~90 |
+| DevOps | Performance CI/CD | ~80 |
+| Code Reviewer | Performance Review | ~60 |
+
+**UI/UX Designer:** Already had Lighthouse via GAP-01 Bash addition.
+
+**Pattern:** Distributed + Central Reference
+- Each agent has focused, role-specific section
+- All reference `.claude/patterns/performance.md` for deep dives
+- Single source of truth prevents fragmentation
+
+**Benefits:**
+- Performance "baked in" to every role
+- No coordination overhead
+- Context-appropriate guidance
+- Mirrors real-world teams
+
 ---
 
 ### Priority 16: PRD-01 - No Benchmark Regression Tracking
@@ -452,6 +569,33 @@ Benchmark templates exist but no automated comparison against actual runs. Measu
 
 **Recommendation:**
 Add benchmark result storage and comparison tooling.
+
+**Resolution (2025-12-07): Simple Results Storage**
+
+Added manual benchmark tracking system:
+
+**New files:**
+- `.claude/benchmark/results/TEMPLATE.md` - Results report template
+- `.claude/benchmark/baseline-v0.3.md` - Baseline metrics for v0.3
+- `.claude/benchmark/results/` - Directory for storing run results
+
+**Workflow:**
+1. Copy TEMPLATE.md to `results/YYYY-MM-DD.md`
+2. Run scenarios manually, record metrics
+3. Compare against baseline
+4. Note regressions
+
+**Metrics tracked:**
+- Time per scenario
+- Success rate
+- Agent invocations
+- Retries
+
+**Regression thresholds:**
+- Warning: >25% time increase or <90% success
+- Failure: >50% time increase or <80% success
+
+Automated collection deferred - Claude Code doesn't expose usage metrics yet.
 
 ---
 
@@ -467,6 +611,32 @@ Add benchmark result storage and comparison tooling.
 **Recommendation:**
 Create test runner or convert to executable format.
 
+**Resolution (2025-12-07): Converted to Manual QA Checklist**
+
+Created `.claude/tests/framework-test-checklist.md` - structured checklist for manual testing.
+
+**Why manual (not automated):**
+- Tests validate LLM behavior, not code
+- Outputs are non-deterministic
+- Human judgment required (e.g., "did it explain correctly?")
+
+**Checklist features:**
+- 13 tests organized by category (Routing, Reflexion, Gatekeeping, Artifact Priority, Regression)
+- Pass/Fail checkboxes with date recording
+- Detailed criteria per test
+- Summary results table
+- Failure log for debugging
+- Release criteria (13/13 to pass)
+
+**Categories:**
+1. Task Routing (3 tests)
+2. Reflexion Loop (3 tests)
+3. Human Gatekeeping (1 test)
+4. Artifact Priority (3 tests)
+5. Regression Tests (3 tests)
+
+Original `beta-v0.2-scenarios.md` preserved for reference.
+
 ---
 
 ### Priority 18: SEC-05 - No Reflexion Loop Cooldown
@@ -480,6 +650,16 @@ Global retry limit is 5, but no cooldown between attempts. Could exhaust tokens 
 
 **Recommendation:**
 Consider adding delay or token budget check between retries.
+
+**Resolution (2025-12-07): Won't Fix**
+
+Analysis revealed:
+- Time-based delays don't apply to LLM workflows (if tests fail, waiting doesn't help)
+- The 3 per-command + 5 global retry limits ARE the rate limiting mechanism
+- Claude Code doesn't expose token counts to commands (can't implement budget checks)
+- This is a cost concern, not a security vulnerability (mislabeled)
+
+The bounded retry limits are sufficient protection.
 
 ---
 
@@ -517,6 +697,30 @@ Creates overhead and percentages don't reflect actual work.
 **Recommendation:**
 Simplify to 3 states: STARTED → IN_PROGRESS → COMPLETED
 
+**Resolution (2025-12-07):**
+
+Replaced arbitrary percentages with step-based progress format:
+
+**New format:**
+```markdown
+**Progress:** Step 2/5 - Engineer Complete
+**Next:** Validation
+```
+
+This provides:
+- Clear position (2/5)
+- Meaningful checkpoint name (what completed)
+- Explicit next step (no ambiguity on resume)
+
+**Files updated:**
+- `implement.md` - 5 steps (Step 0/5 → Step 5/5)
+- `fix.md` - 4 steps (Step 0/4 → Step 4/4)
+- `current-task.md` - Template updated with **Next:** field
+- `state-based-session-management.md` - Key sections updated
+- `resume.md` - Progress display updated
+
+**Rationale:** Full simplification to 3 states would break resume accuracy. Step-based format keeps all checkpoints but removes arbitrary percentages.
+
 ---
 
 ### Priority 21: WST-04 - Unused State Files
@@ -534,6 +738,26 @@ State files created but rarely read by other commands:
 
 **Recommendation:**
 Either integrate into workflows or remove.
+
+**Resolution (2025-12-07):**
+
+Analysis revealed `diagnosis.md` and `fix-notes.md` ARE actually used (read by fix.md output and other agents). Only 2 files were truly unused:
+
+**git-strategy.md → Pattern file:**
+- Created `.claude/patterns/git-workflow.md` - centralized git conventions
+- Updated DevOps agent to reference pattern instead of creating state file
+- All agents can now reference the pattern when committing
+- Covers: branching strategy, commit conventions, PR requirements, safety rules
+
+**test-quality-review.md → Merged into test-results.md:**
+- Added "Quality Assessment" section to test-results.md template
+- Updated test.md Code Reviewer step to update test-results.md instead
+- Single file for all test output (results + quality review)
+
+**Files updated:**
+- Created: `.claude/patterns/git-workflow.md` (new pattern file)
+- Modified: `.claude/agents/devops.md` (reference pattern, not create state file)
+- Modified: `.claude/commands/test.md` (merge quality review into results)
 
 ---
 
@@ -553,6 +777,39 @@ Even when structure hasn't changed.
 **Recommendation:**
 Cache file tree with timestamp, regenerate only if files changed.
 
+**Resolution (2025-12-07):**
+
+Analysis revealed caching isn't the right optimization. The real issue is **token waste from injecting tree into agents that don't need it**.
+
+**Token cost analysis:**
+- Tree output: ~2000 tokens per injection
+- Injected into 5 agents in implement.md: ~10,000 tokens total
+- But only 2 agents (Engineer, Tester) actually use the tree
+
+**Solution: Selective injection (not caching)**
+
+Removed tree from agents that don't need it:
+
+| Agent | Before | After | Rationale |
+|-------|--------|-------|-----------|
+| Engineer | Tree | Tree | Needs file locations |
+| Tester | Tree | Tree | Needs test locations |
+| Security Auditor | Tree | **Removed** | Uses implementation-notes.md |
+| Code Reviewer | Tree | **Removed** | Uses implementation-notes.md |
+| Documenter | Tree | **Removed** | Uses implementation-notes.md |
+
+**Files updated:**
+- `implement.md` - Removed tree from Security Auditor, Code Reviewer, Documenter
+- `test.md` - Removed tree from Code Reviewer
+- `fix.md` - Already optimized (Code Reviewer had no tree)
+
+**Token savings:**
+- implement.md: ~6000 tokens per workflow (3 agents × 2000 tokens)
+- test.md: ~2000 tokens per workflow (1 agent)
+- **Total: ~8000 tokens saved per workflow**
+
+Added clarifying instruction to each agent: "The implementation-notes.md lists all files that were modified - focus on those."
+
 ---
 
 ### Priority 23: OPT-04 - No Agent Caching
@@ -566,6 +823,18 @@ Each agent invocation is stateless. If Architect runs twice, it re-reads everyth
 
 **Recommendation:**
 Implement spec fingerprinting - skip re-analysis if specs unchanged.
+
+**Resolution (2025-12-07): Already Resolved**
+
+The context injection pattern (v0.3 Phase 1) already addresses this at the command level:
+
+1. Command starts → Step 0 reads all specs ONCE
+2. Specs content injected into all agent prompts
+3. Agents instructed: "Context already loaded above - DO NOT re-read these files"
+
+This eliminates redundant reads within a single command execution. Cross-session caching is not needed since specs may change between runs.
+
+The original concern was about per-agent redundancy, which is now solved.
 
 ---
 
@@ -581,6 +850,22 @@ Both validate implementation quality. Could be combined into "Quality Agent".
 **Recommendation:**
 Evaluate if consolidation reduces coordination overhead.
 
+**Resolution (2025-12-07): Won't Fix - Keep Separate**
+
+Analysis showed merging would cause more problems than it solves:
+
+1. **Different responsibilities:** Tester writes tests (modifies `tests/`), Code Reviewer only analyzes (read-only)
+2. **Different tool access:** Tester needs Bash to run tests; Code Reviewer is intentionally read-only
+3. **Parallel execution depends on separation:** v0.3 parallel validation runs them concurrently for 50% time savings
+4. **Clear ownership:** Tester owns `tests/`, Code Reviewer never modifies code
+5. **Independent verdicts:** "Tests pass but code quality bad" is a valuable distinct signal
+
+Naming considered:
+- "Quality Agent" too ambiguous - overlaps with Code Reviewer's "code quality" domain
+- "Tester" is specific and accurate - owns tests, not general quality
+
+Current design follows principle: *agents that write* vs *agents that only read*.
+
 ---
 
 ### Priority 25: UNN-02 - DevOps/Engineer Overlap
@@ -594,6 +879,25 @@ DevOps creates Dockerfile, CI/CD configs. Engineer often updates build configs, 
 
 **Recommendation:**
 Clarify boundaries or merge deployment responsibilities.
+
+**Resolution (2025-12-07): Won't Fix - Boundaries Already Clear**
+
+Analysis showed boundaries are already well-defined:
+
+| Owner | Files |
+|-------|-------|
+| DevOps | `.github/workflows/*`, `Dockerfile`, `docker-compose.yml`, `k8s/*`, `helm/*` |
+| Engineer | `src/*`, `tests/*`, `package.json`, `*.config.*` (vite, webpack, etc.) |
+
+Explicit restrictions already in place:
+- DevOps: "Running application builds (Engineer does this)"
+- Engineer: "Deployments (DevOps handles this)"
+
+The v0.3 Phase 1 role enforcement (file boundaries) prevents violations:
+- DevOps can only write to deployment/CI files
+- Engineer can only write to src/ and tests/
+
+Edge cases follow file location naturally - no additional clarification needed.
 
 ---
 
@@ -629,6 +933,31 @@ Framework assumes single-project structure. No support for:
 
 **Recommendation:**
 Add monorepo patterns in future version.
+
+**Resolution (2025-12-07): Documented - Implementation Deferred to v0.4**
+
+Created comprehensive pattern documentation: `.claude/patterns/multi-repo.md`
+
+**Documentation covers:**
+1. **Stage 1: Modular Monolith** - Single repo with module boundaries (current framework works)
+2. **Stage 2: Multi-Repo Services** - Separate repos with shared types package
+3. **Stage 3: Event-Driven** - Async communication with event schemas
+
+**Key guidance:**
+- AI agents work best with focused context (favors multi-repo over monorepo)
+- Shared types via npm package (`@company/types`)
+- Coordination patterns: Sequential, Beta channel, Local linking
+- Decision framework based on cross-cutting change frequency
+- Migration checklists for each evolution stage
+
+**v0.4 Planned Implementation:**
+- `/project:init-platform` - Create orchestration repo
+- `/project:add-service` - Add new service repo
+- `/project:sync-types` - Update shared types across repos
+- `/project:release` - Coordinated release train
+- New specs: `repos.md`, `dependencies.md`, `events.md`
+
+**Current workaround:** Work from service directory (`cd service && claude`)
 
 ---
 

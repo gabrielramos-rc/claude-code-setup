@@ -36,14 +36,15 @@
 **Command:** /project:implement Phase 2 - Authentication
 **Status:** IN_PROGRESS | COMPLETED | FAILED
 **Started:** 2025-12-06 14:00:00
-**Progress:** 60%
+**Progress:** Step 3/5 - Validation Complete
+**Next:** Documentation
 
 ## Workflow Steps
-- [x] Step 1 ✓ (completed HH:MM)
-- [x] Step 2 ✓ (completed HH:MM)
-- [ ] Step 3 ← CURRENT
-- [ ] Step 4
-- [ ] Step 5
+1. [x] Step 1 ✓ (completed HH:MM)
+2. [x] Step 2 ✓ (completed HH:MM)
+3. [x] Step 3 ✓ (completed HH:MM)
+4. [ ] Step 4 ← CURRENT
+5. [ ] Step 5
 
 ## Last Checkpoint
 **Completed:** {what was just finished}
@@ -105,16 +106,25 @@ If interrupted, run: `/project:resume`
 - Record error message
 - Provide troubleshooting guidance
 
-### Progress Calculation
+### Progress Format
+
+Use step-based progress for clarity and honesty:
 
 ```
-Progress % = (completed_steps / total_steps) * 100
+Progress: Step X/Y - {Checkpoint Name}
+Next: {What's next}
 
 Example:
 Workflow has 5 steps
 3 steps completed
-Progress = (3 / 5) * 100 = 60%
+Progress: Step 3/5 - Validation Complete
+Next: Documentation
 ```
+
+This format provides:
+- Clear position (3/5)
+- Meaningful checkpoint name (what just completed)
+- Explicit next step (no ambiguity on resume)
 
 ### Checkpoint Format
 
@@ -147,15 +157,15 @@ Write initial state to `.claude/plans/current-task.md`:
 **Command:** /project:implement $ARGUMENTS
 **Status:** IN_PROGRESS
 **Started:** {current_timestamp}
-**Progress:** 0%
+**Progress:** Step 0/5 - Starting
+**Next:** Context Loading
 
 ## Workflow Steps
-- [ ] Load context (specs, file tree)
-- [ ] Architect: Design architecture
-- [ ] Engineer: Implement code
-- [ ] Validation: Test + Security + Review
-- [ ] Documentation: Update docs
-- [ ] Human gate: Approval
+1. [ ] Load context (specs, file tree)
+2. [ ] Engineer: Implement code
+3. [ ] Validation: Test + Security + Review
+4. [ ] Documentation: Update docs
+5. [ ] Human gate: Approval
 
 ## Context
 **Feature:** $ARGUMENTS
@@ -166,29 +176,26 @@ If interrupted, run: `/project:resume`
 ```
 ```
 
-### After Step 0 (Context Loading)
+### After Step 1 (Context Loading)
 
 ```markdown
 Update `.claude/plans/current-task.md`:
 
 ```markdown
 ## Current Task
-**Command:** /project:implement $ARGUMENTS
-**Status:** IN_PROGRESS
-**Started:** {timestamp}
-**Progress:** 15%
+**Progress:** Step 1/5 - Context Loaded
+**Next:** Engineer Implementation
 
 ## Workflow Steps
-- [x] Load context (specs, file tree) ✓ (completed {time})
-- [ ] Architect: Design architecture ← CURRENT
-- [ ] Engineer: Implement code
-- [ ] Validation: Test + Security + Review
-- [ ] Documentation: Update docs
-- [ ] Human gate: Approval
+1. [x] Load context (specs, file tree) ✓ (completed {time})
+2. [ ] Engineer: Implement code ← CURRENT
+3. [ ] Validation: Test + Security + Review
+4. [ ] Documentation: Update docs
+5. [ ] Human gate: Approval
 
 ## Last Checkpoint
 **Completed:** Loaded requirements.md, architecture.md, tech-stack.md, project file tree
-**Next Step:** Invoke Architect agent to design feature architecture
+**Next Step:** Invoke Engineer agent to implement feature
 **Files Modified:** None (context loading only)
 ```
 ```

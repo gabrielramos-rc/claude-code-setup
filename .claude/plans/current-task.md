@@ -3,7 +3,8 @@
 **Command:** None
 **Status:** IDLE
 **Started:** N/A
-**Progress:** 0%
+**Progress:** N/A
+**Next:** N/A
 
 ## Workflow Steps
 

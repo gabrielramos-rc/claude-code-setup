@@ -17,13 +17,14 @@ Write initial state to `.claude/plans/current-task.md`:
 **Command:** /project:fix $ARGUMENTS
 **Status:** IN_PROGRESS
 **Started:** {current_timestamp}
-**Progress:** 0%
+**Progress:** Step 0/4 - Starting
+**Next:** Context Loading
 
 ## Workflow Steps
-- [ ] Load context (specs, file tree, error logs)
-- [ ] Engineer: Diagnose and fix issue
-- [ ] Validation: Test + Code Review
-- [ ] Approval
+1. [ ] Load context (specs, file tree, error logs)
+2. [ ] Engineer: Diagnose and fix issue
+3. [ ] Validation: Test + Code Review
+4. [ ] Approval
 
 ## Context
 **Issue:** $ARGUMENTS
@@ -60,11 +61,14 @@ If error logs or test failures are available, capture them.
 
 ```markdown
 ## Current Task
-**Progress:** 25%
+**Progress:** Step 1/4 - Context Loaded
+**Next:** Engineer Diagnosis
 
 ## Workflow Steps
-- [x] Load context (specs, file tree, error logs) ✓ (completed {timestamp})
-- [ ] Engineer: Diagnose and fix issue ← CURRENT
+1. [x] Load context (specs, file tree, error logs) ✓ (completed {timestamp})
+2. [ ] Engineer: Diagnose and fix issue ← CURRENT
+3. [ ] Validation: Test + Code Review
+4. [ ] Approval
 
 ## Last Checkpoint
 **Completed:** Loaded specifications, project file tree, and error context
@@ -164,12 +168,14 @@ Output: Path to `.claude/state/fix-notes.md`
 
 ```markdown
 ## Current Task
-**Progress:** 60%
+**Progress:** Step 2/4 - Fix Implemented
+**Next:** Validation (Test + Code Review)
 
 ## Workflow Steps
-- [x] Load context ✓
-- [x] Engineer: Diagnose and fix issue ✓ (completed {timestamp})
-- [ ] Validation: Test + Code Review ← CURRENT
+1. [x] Load context ✓
+2. [x] Engineer: Diagnose and fix issue ✓ (completed {timestamp})
+3. [ ] Validation: Test + Code Review ← CURRENT
+4. [ ] Approval
 
 ## Last Checkpoint
 **Completed:** Engineer diagnosed root cause and implemented fix
@@ -314,13 +320,14 @@ Read both result files:
 
 ```markdown
 ## Current Task
-**Progress:** 90%
+**Progress:** Step 3/4 - Validation Complete
+**Next:** Approval
 
 ## Workflow Steps
-- [x] Load context ✓
-- [x] Engineer: Diagnose and fix issue ✓
-- [x] Validation: Test + Code Review ✓ (completed {timestamp})
-- [ ] Approval ← CURRENT
+1. [x] Load context ✓
+2. [x] Engineer: Diagnose and fix issue ✓
+3. [x] Validation: Test + Code Review ✓ (completed {timestamp})
+4. [ ] Approval ← CURRENT
 
 ## Last Checkpoint
 **Completed:** Validation passed (tests: passing, review: PASS)
@@ -352,7 +359,7 @@ Provide:
 **Started:** {started_timestamp}
 **Completed:** {current_timestamp}
 **Duration:** {calculate duration}
-**Progress:** 100%
+**Progress:** Step 4/4 - Complete
 
 ## Results
 - **Root Cause:** {from diagnosis.md}

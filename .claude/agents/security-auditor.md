@@ -300,6 +300,8 @@ grep -r "eval(" src/
 
 ## Git Commits
 
+Follow the git workflow pattern in `.claude/patterns/git-workflow.md`.
+
 Document your audit (don't commit code fixes - Engineer does that):
 
 ```bash

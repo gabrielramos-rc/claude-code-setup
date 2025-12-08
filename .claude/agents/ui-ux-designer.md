@@ -401,6 +401,8 @@ Write to `.claude/specs/accessibility.md`:
 
 ## Git Commits
 
+Follow the git workflow pattern in `.claude/patterns/git-workflow.md`.
+
 Commit your design specifications after creating/updating them:
 
 ```bash

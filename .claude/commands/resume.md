@@ -51,7 +51,7 @@ Present detailed progress:
 
 **Last session:** {command from current-task.md}
 **Started:** {started timestamp}
-**Progress:** {progress}%
+**Progress:** {progress from current-task.md, e.g., "Step 2/5 - Engineer Complete"}
 **Duration so far:** {calculate from started timestamp}
 
 **Completed steps:**
@@ -222,7 +222,8 @@ Follow the original command workflow for the next step.
 After completing the next step, update `.claude/plans/current-task.md`:
 
 ```markdown
-**Progress:** {new_percentage}%
+**Progress:** Step {X}/{Y} - {Checkpoint Name}
+**Next:** {What's next}
 
 ## Workflow Steps
 - [x] {previous steps} 
@@ -244,7 +245,7 @@ When complete, update current-task.md:
 ```markdown
 **Status:** COMPLETED
 **Completed:** {timestamp}
-**Progress:** 100%
+**Progress:** Step {X}/{X} - Complete
 
 ## Results
 {final results}
@@ -320,7 +321,7 @@ After successfully resuming and continuing the workflow, provide:
 ```
  **Workflow Resumed and Continued**
 
-Resumed from: Validation checkpoint (60% complete)
+Resumed from: Step 3/5 - Validation Complete
 Completed after resume:
 -  Documentation updated
 -  Human gate approval received

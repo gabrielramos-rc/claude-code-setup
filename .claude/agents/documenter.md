@@ -258,6 +258,8 @@ Check documentation quality:
 
 ## Git Commits
 
+Follow the git workflow pattern in `.claude/patterns/git-workflow.md`.
+
 Commit your documentation after creating/updating:
 
 ```bash

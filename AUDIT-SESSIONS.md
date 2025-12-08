@@ -114,13 +114,44 @@ fix(audit): quick security and functionality fixes
 
 ## Session 6: New Agents
 
-**Status:** PENDING
+**Status:** COMPLETE
+**Completed:** 2025-12-07
 
-| Issue | Description |
-|-------|-------------|
-| GAP-04 | Create API Designer agent |
-| GAP-05 | Create Database/Migration agent |
-| GAP-06 | Create Performance agent |
+| Issue | Description | Status |
+|-------|-------------|--------|
+| GAP-04 | Create API Designer agent | [x] Extended Architect |
+| GAP-05 | Create Database/Migration agent | [x] Hybrid (Architect + Engineer) |
+| GAP-06 | Create Performance agent | [x] Distributed across agents |
+
+**Changes Made:**
+
+**GAP-04:** Extended Architect with "API Design Protocol" (~400 lines)
+- REST API design (versioning, resources, pagination, errors, rate limiting)
+- GraphQL design (schema-first, Relay pagination)
+- Real-time APIs (WebSocket, SSE)
+- Outputs: `openapi.yaml`, `schema.graphql`, `asyncapi.yaml` at project root
+- Validation commands added to Bash
+
+**GAP-05:** Hybrid approach - Architect designs, Engineer implements
+- Architect: "Data Model Design" section (~160 lines)
+- Engineer: "Database Implementation Protocol" (~120 lines)
+- Engineer: "Data Engineering Protocol" (~100 lines)
+- Covers Prisma, Drizzle, TypeORM, Knex, raw SQL
+- ETL pipelines, batch processing, query optimization
+
+**GAP-06:** Distributed performance across 5 agents
+- Created `.claude/patterns/performance.md` central reference (~350 lines)
+- Architect: "Performance Design" section (~60 lines)
+- Engineer: "Performance Implementation" section (~70 lines)
+- Tester: "Performance Testing" section (~90 lines)
+- DevOps: "Performance CI/CD" section (~80 lines)
+- Code Reviewer: "Performance Review" section (~60 lines)
+
+**Key Decisions:**
+- No new agents created - extended existing agents
+- API design is architecture (not separate agent)
+- Database follows Architect→Engineer flow
+- Performance is cross-cutting (everyone's job)
 
 ---
 
@@ -256,6 +287,6 @@ Let's start with the first item.
 | Session 2 | 2025-12-07 | ~15 min | a9a8c39 |
 | Session 3 | 2025-12-07 | ~15 min | e7bd91a |
 | Session 4 | 2025-12-07 | ~15 min | 6e5e9ef |
-| Session 5 | 2025-12-07 | ~25 min | - |
-| Session 6 | - | - | - |
+| Session 5 | 2025-12-07 | ~25 min | b011a91 |
+| Session 6 | 2025-12-07 | ~45 min | - |
 | Session 7 | - | - | - |

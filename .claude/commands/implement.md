@@ -17,15 +17,15 @@ Write initial state to `.claude/plans/current-task.md`:
 **Command:** /project:implement $ARGUMENTS
 **Status:** IN_PROGRESS
 **Started:** {current_timestamp}
-**Progress:** 0%
+**Progress:** Step 0/5 - Starting
+**Next:** Context Loading
 
 ## Workflow Steps
-- [ ] Load context (specs, file tree)
-- [ ] Architect: Design feature architecture
-- [ ] Engineer: Implement code
-- [ ] Validation: Test + Security + Review
-- [ ] Documentation: Update docs
-- [ ] Human gate: Approval
+1. [ ] Load context (specs, file tree)
+2. [ ] Engineer: Implement code
+3. [ ] Validation: Test + Security + Review
+4. [ ] Documentation: Update docs
+5. [ ] Human gate: Approval
 
 ## Context
 **Feature:** $ARGUMENTS
@@ -90,11 +90,15 @@ If resuming a workflow, read:
 
 ```markdown
 ## Current Task
-**Progress:** 15%
+**Progress:** Step 1/5 - Context Loaded
+**Next:** Engineer Implementation
 
 ## Workflow Steps
-- [x] Load context (specs, file tree) ✓ (completed {timestamp})
-- [ ] Engineer: Implement code ← CURRENT
+1. [x] Load context (specs, file tree) ✓ (completed {timestamp})
+2. [ ] Engineer: Implement code ← CURRENT
+3. [ ] Validation: Test + Security + Review
+4. [ ] Documentation: Update docs
+5. [ ] Human gate: Approval
 
 ## Last Checkpoint
 **Completed:** Loaded specifications and project file tree
@@ -193,12 +197,15 @@ Output: Path to `.claude/state/implementation-notes.md`
 
 ```markdown
 ## Current Task
-**Progress:** 40%
+**Progress:** Step 2/5 - Engineer Complete
+**Next:** Validation (Test + Security + Review)
 
 ## Workflow Steps
-- [x] Load context ✓
-- [x] Engineer: Implement code ✓ (completed {timestamp})
-- [ ] Validation: Test + Security + Review ← CURRENT
+1. [x] Load context ✓
+2. [x] Engineer: Implement code ✓ (completed {timestamp})
+3. [ ] Validation: Test + Security + Review ← CURRENT
+4. [ ] Documentation: Update docs
+5. [ ] Human gate: Approval
 
 ## Last Checkpoint
 **Completed:** Engineer implemented feature following architecture specs
@@ -274,18 +281,12 @@ Output test results to: `.claude/state/test-results.md`
     {{IMPLEMENTATION_NOTES}}
     </document_content>
   </document>
-
-  <document index="2">
-    <source>Project File Tree</source>
-    <document_content>
-    {{PROJECT_TREE}}
-    </document_content>
-  </document>
 </documents>
 
 You are the Security Auditor agent.
 
 **Context already loaded above - DO NOT re-read files.**
+The implementation-notes.md lists all files that were modified - focus your audit on those.
 
 Your task: Run security scans and audit the implementation.
 
@@ -309,18 +310,12 @@ Output findings to: `.claude/state/security-findings.md`
     {{IMPLEMENTATION_NOTES}}
     </document_content>
   </document>
-
-  <document index="3">
-    <source>Project File Tree</source>
-    <document_content>
-    {{PROJECT_TREE}}
-    </document_content>
-  </document>
 </documents>
 
 You are the Code Reviewer agent.
 
 **Context already loaded above - DO NOT re-read files.**
+The implementation-notes.md lists all files that were modified - focus your review on those.
 
 Your task: Review code quality, patterns, and maintainability.
 
@@ -376,13 +371,15 @@ Follow the reflexion loop pattern in `.claude/patterns/reflexion.md`.
 
 ```markdown
 ## Current Task
-**Progress:** 70%
+**Progress:** Step 3/5 - Validation Complete
+**Next:** Documentation
 
 ## Workflow Steps
-- [x] Load context ✓
-- [x] Engineer: Implement code ✓
-- [x] Validation: Test + Security + Review ✓ (completed {timestamp})
-- [ ] Documentation: Update docs ← CURRENT
+1. [x] Load context ✓
+2. [x] Engineer: Implement code ✓
+3. [x] Validation: Test + Security + Review ✓ (completed {timestamp})
+4. [ ] Documentation: Update docs ← CURRENT
+5. [ ] Human gate: Approval
 
 ## Last Checkpoint
 **Completed:** Validation passed (tests: X%, security: Y findings, review: PASS)
@@ -409,18 +406,12 @@ Invoke Documenter agent with context:
     {{IMPLEMENTATION_NOTES}}
     </document_content>
   </document>
-
-  <document index="2">
-    <source>Project File Tree</source>
-    <document_content>
-    {{PROJECT_TREE}}
-    </document_content>
-  </document>
 </documents>
 
 You are the Documenter agent.
 
 **Context already loaded above - DO NOT re-read files.**
+The implementation-notes.md describes what was implemented - document those features.
 
 Your task: Update documentation for this implementation.
 
@@ -434,14 +425,15 @@ Output:
 
 ```markdown
 ## Current Task
-**Progress:** 90%
+**Progress:** Step 4/5 - Documentation Complete
+**Next:** Human Approval
 
 ## Workflow Steps
-- [x] Load context ✓
-- [x] Engineer: Implement code ✓
-- [x] Validation: Test + Security + Review ✓
-- [x] Documentation: Update docs ✓ (completed {timestamp})
-- [ ] Human gate: Approval ← CURRENT
+1. [x] Load context ✓
+2. [x] Engineer: Implement code ✓
+3. [x] Validation: Test + Security + Review ✓
+4. [x] Documentation: Update docs ✓ (completed {timestamp})
+5. [ ] Human gate: Approval ← CURRENT
 
 ## Last Checkpoint
 **Completed:** Documenter updated end-user documentation
@@ -486,7 +478,7 @@ Present summary to user:
 **Started:** {started_timestamp}
 **Completed:** {current_timestamp}
 **Duration:** {calculate duration}
-**Progress:** 100%
+**Progress:** Step 5/5 - Complete
 
 ## Results
 - **Implementation:** {summary from implementation-notes.md}

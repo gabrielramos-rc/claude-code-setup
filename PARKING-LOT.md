@@ -118,6 +118,206 @@ Create an opinionated variant of the framework with pre-selected stack:
 
 ---
 
+### 4. Refactor Large Agent Files to Summary + Reference Architecture
+
+**Date:** 2025-12-07
+**Source:** Audit Session 6 discussion
+**Status:** Parked
+
+**Problem:**
+Agent files are growing large (Architect ~1100 lines, Engineer ~550 lines). This creates:
+- High token cost when loading agents
+- Cognitive overload for Claude processing full files
+- Harder to maintain and update
+
+**Proposed Solution:**
+Split large agent files into:
+
+```
+.claude/agents/
+├── architect.md           ← Core responsibilities + summary (~200 lines)
+├── engineer.md            ← Core responsibilities + summary (~200 lines)
+└── protocols/
+    ├── api-design.md      ← Full API Design Protocol
+    ├── data-model.md      ← Full Data Model Design
+    ├── database-impl.md   ← Full Database Implementation Protocol
+    ├── data-engineering.md ← Full Data Engineering Protocol
+    └── frontend-arch.md   ← Full Frontend Architecture
+```
+
+**Agent file structure:**
+```markdown
+## Core Responsibilities
+(What agent does, 50 lines)
+
+## Protocols Available
+- **API Design** - See protocols/api-design.md
+- **Data Model** - See protocols/data-model.md
+(Agent loads protocol only when task requires it)
+
+## Quick Reference
+(Checklists, common commands, 100 lines)
+```
+
+**Benefits:**
+- Smaller base agent files
+- Protocols loaded on-demand
+- Easier to update individual protocols
+- Could enable protocol sharing between agents
+
+**Considerations:**
+- How does agent know which protocol to load?
+- Context injection pattern needs updating
+- May need protocol index/registry
+
+---
+
+### 5. Protocol System for Agent Specialization
+
+**Date:** 2025-12-07
+**Source:** Audit Session 6 discussion
+**Status:** Parked
+
+**Problem:**
+Currently, specialization is done by adding sections to agent files. This doesn't scale and creates monolithic agents.
+
+**Proposed Solution:**
+Formalize a "Protocol" system:
+
+```markdown
+# Protocol: Performance Optimization
+
+## Applies To
+- Engineer (code-level optimization)
+- Tester (load testing)
+- DevOps (CI performance budgets)
+
+## When Activated
+- Task mentions "performance", "slow", "optimize", "load test"
+- User explicitly requests performance focus
+
+## Protocol Content
+(Specialized guidance for this concern)
+```
+
+**Protocol Registry:**
+```yaml
+# .claude/protocols/registry.yaml
+protocols:
+  - name: performance
+    file: protocols/performance.md
+    agents: [engineer, tester, devops]
+    triggers: ["performance", "optimize", "slow", "load test"]
+
+  - name: security-hardening
+    file: protocols/security-hardening.md
+    agents: [engineer, security-auditor]
+    triggers: ["security", "harden", "vulnerability"]
+```
+
+**Benefits:**
+- Cross-cutting concerns handled cleanly
+- Agents stay focused on core responsibilities
+- Protocols can be shared, versioned, updated independently
+- Easy to add new specializations without bloating agents
+
+**Considerations:**
+- How are protocols activated? Command-level? Auto-detection?
+- Token cost of loading protocols
+- Interaction between multiple active protocols
+- This is a significant architectural change
+
+---
+
+### 6. Cross-Cutting FinOps/Cost Protocols
+
+**Date:** 2025-12-07
+**Source:** Audit Session 6 discussion
+**Status:** Parked
+
+**Problem:**
+Cost optimization is a cross-cutting concern that spans multiple agents:
+- Architect: Infrastructure cost modeling, right-sizing decisions
+- Engineer: Efficient code, avoiding expensive operations
+- DevOps: Cloud cost monitoring, auto-scaling policies, spot instances
+- Code Reviewer: Spotting costly patterns (N+1 queries, unnecessary API calls)
+
+**Proposed Solution:**
+Similar to performance, create distributed cost awareness:
+- `.claude/patterns/finops.md` - Central reference for cost optimization
+- Each agent gets a focused "Cost Awareness" section
+
+**Topics to cover:**
+- Cloud cost estimation
+- Database query cost (RCU/WCU for DynamoDB, compute time for serverless)
+- API call optimization (batching, caching)
+- Right-sizing recommendations
+- Cost monitoring and alerts
+- Serverless vs container cost tradeoffs
+
+---
+
+### 7. Cross-Cutting Logging/Monitoring Protocols
+
+**Date:** 2025-12-07
+**Source:** Audit Session 6 discussion
+**Status:** Parked
+
+**Problem:**
+Observability (logging, metrics, tracing) spans multiple agents:
+- Architect: Observability architecture, tool selection
+- Engineer: Structured logging, metrics instrumentation, trace propagation
+- DevOps: Log aggregation, alerting, dashboards
+- Security Auditor: Audit logging, security event monitoring
+
+**Proposed Solution:**
+Create distributed observability guidance:
+- `.claude/patterns/observability.md` - Central reference
+- Each agent gets focused logging/monitoring section
+
+**Topics to cover:**
+- Structured logging patterns (JSON, log levels)
+- Metrics instrumentation (counters, gauges, histograms)
+- Distributed tracing (OpenTelemetry, trace context propagation)
+- Log aggregation setup (ELK, Loki, CloudWatch)
+- Alerting strategies (error rates, latency percentiles)
+- Dashboard design principles
+
+---
+
+### 8. SRE Protocols
+
+**Date:** 2025-12-07
+**Source:** Audit Session 6 discussion
+**Status:** Parked
+
+**Problem:**
+Site Reliability Engineering practices span multiple concerns:
+- Service Level Objectives (SLOs) and error budgets
+- Incident response and postmortems
+- Capacity planning
+- Chaos engineering
+- On-call practices
+
+**Proposed Solution:**
+Create SRE-focused protocols that integrate with existing agents:
+- `.claude/patterns/sre.md` - Central SRE reference
+- Architect: SLO definition, reliability requirements
+- DevOps: SLI implementation, error budget tracking, runbooks
+- Tester: Chaos testing, failure injection
+- Engineer: Circuit breakers, graceful degradation, retry patterns
+
+**Topics to cover:**
+- SLO/SLI/SLA definitions
+- Error budget policies
+- Incident severity levels
+- Postmortem templates
+- Capacity planning methodology
+- Chaos engineering principles
+- Runbook structure
+
+---
+
 *Add new ideas below*
 
 ---

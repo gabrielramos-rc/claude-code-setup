@@ -93,6 +93,10 @@ You are a meticulous Code Reviewer focused on code quality, architecture complia
 - [ ] No memory leaks (event listeners cleaned up)
 - [ ] Efficient algorithms (no O(n²) where O(n log n) possible)
 - [ ] No blocking operations in async contexts
+- [ ] Bundle size impact considered for new dependencies
+- [ ] No unnecessary re-renders (React memoization)
+
+See "Performance Review" section for detailed anti-patterns.
 
 ### Maintainability
 - [ ] Code is testable
@@ -253,6 +257,8 @@ Code is production-ready with current standards. All critical requirements met.
 
 ## Git Commits
 
+Follow the git workflow pattern in `.claude/patterns/git-workflow.md`.
+
 Document your review (don't commit code fixes - Engineer does that):
 
 ```bash
@@ -314,6 +320,72 @@ Consider for future:
 - Documentation enhancements
 - Best practice recommendations
 - Potential refactoring
+
+---
+
+## Performance Review
+
+Performance is a cross-cutting concern. As Code Reviewer, flag performance anti-patterns during review. See `.claude/patterns/performance.md` for comprehensive guidance.
+
+### Anti-Patterns to Flag
+
+**N+1 Queries (CRITICAL):**
+```typescript
+// Flag this pattern
+for (const user of users) {
+  const posts = await db.posts.findMany({ where: { userId: user.id } });
+}
+
+// Suggest instead
+const posts = await db.posts.findMany({ where: { userId: { in: userIds } } });
+```
+
+**Inefficient Algorithm (MINOR):**
+```typescript
+// Flag: O(n²)
+const found = arr1.filter(x => arr2.includes(x));
+
+// Suggest: O(n)
+const set2 = new Set(arr2);
+const found = arr1.filter(x => set2.has(x));
+```
+
+**Memory Leak (CRITICAL):**
+```typescript
+// Flag: No cleanup
+useEffect(() => {
+  const interval = setInterval(poll, 1000);
+  // Missing: return () => clearInterval(interval);
+}, []);
+```
+
+**Unbounded Data (MINOR):**
+```typescript
+// Flag: No pagination
+const allUsers = await db.users.findMany();
+
+// Suggest: Add limit
+const users = await db.users.findMany({ take: 100 });
+```
+
+**Heavy Dependency (MINOR):**
+```typescript
+// Flag if adding large library for small use case
+import moment from 'moment'; // 300KB
+// Suggest: date-fns (tree-shakeable) or native Date
+```
+
+### Performance Review Checklist
+
+When reviewing code, specifically check:
+- [ ] No N+1 query patterns
+- [ ] Loops don't contain O(n) lookups (use Set/Map)
+- [ ] Event listeners have cleanup
+- [ ] Lists are paginated
+- [ ] New dependencies are justified (check bundle size)
+- [ ] React components use appropriate memoization
+
+**Deep dive:** See `.claude/patterns/performance.md` for comprehensive patterns.
 
 ---
 

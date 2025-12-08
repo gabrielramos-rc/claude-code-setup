@@ -160,6 +160,13 @@ Follow these steps:
    ## Coverage Gaps
    - {file:line} - {description}
 
+   ## Quality Assessment
+   (Added by Code Reviewer if quality check runs)
+   - Comprehensiveness: {assessment}
+   - Edge cases: {assessment}
+   - Maintainability: {assessment}
+   - Redundant tests: {yes/no, details}
+
    ## Recommendation
    {PASS/FAIL with reasoning}
    ```
@@ -225,18 +232,12 @@ If tests are passing, optionally invoke **code-reviewer agent** to review test q
     {{TEST_RESULTS}}
     </document_content>
   </document>
-
-  <document index="2">
-    <source>Project File Tree</source>
-    <document_content>
-    {{PROJECT_TREE}}
-    </document_content>
-  </document>
 </documents>
 
 You are the Code Reviewer agent.
 
 **Context already loaded above - DO NOT re-read files.**
+The test-results.md shows what tests exist and their results - assess quality based on that.
 
 Your task: Review test quality:
 - Are tests comprehensive?
@@ -244,7 +245,7 @@ Your task: Review test quality:
 - Are tests maintainable?
 - Any redundant tests?
 
-Output brief review to: `.claude/state/test-quality-review.md`
+Update the "Quality Assessment" section in `.claude/state/test-results.md` with your findings.
 ```
 
 ---
