@@ -40,6 +40,9 @@ EOF
     # Process each line of JSONL
     local turn=1
     while IFS= read -r line; do
+        # Skip empty lines to prevent jq parse errors
+        [ -z "$line" ] && continue
+
         # Extract fields using jq
         local type=$(echo "$line" | jq -r '.type // "unknown"')
         local role=$(echo "$line" | jq -r '.role // ""')
