@@ -2,26 +2,199 @@
 
 ## Instructions
 
-Create or run tests for: **$ARGUMENTS**
+Create or run tests based on: **$ARGUMENTS**
 
-### Use the **tester agent** to:
+Follow the context injection pattern in `.claude/patterns/context-injection.md` and model selection guide in `.claude/patterns/model-selection.md`.
+
+---
+
+## Usage
+
+```
+/project:test                     # Run all tests
+/project:test unit auth           # Unit tests for auth module
+/project:test integration api     # Integration tests for API
+/project:test e2e checkout        # E2E tests for checkout flow
+/project:test coverage            # Full suite with coverage report
+```
+
+**Scope options:**
+- `unit [target]` - Unit tests only (fast, isolated, mocked dependencies)
+- `integration [target]` - Integration tests (real dependencies, API contracts)
+- `e2e [target]` - End-to-end tests (browser automation, full stack)
+- `coverage` - All tests with coverage report
+- No scope - Infer from target or run all
+
+---
+
+## Step 0: Load Project Context
+
+Before invoking any agents, gather all shared context.
+
+### 1. Read Core Specifications
+
+Read specifications if they exist:
+- `.claude/specs/requirements.md`
+- `.claude/specs/architecture.md`
+- `.claude/specs/tech-stack.md`
+
+### 2. Generate Project File Tree
+
+```bash
+tree -L 3 -I 'node_modules|.git|dist|build|coverage' > /tmp/project-tree.txt
+```
+
+### 3. Read Implementation Context
+
+If testing recently implemented code, read:
+- `.claude/state/implementation-notes.md`
+
+---
+
+## Step 1: Invoke Tester Agent
+
+Use the **tester agent** with context injection:
+
+```
+<documents>
+  <document index="1">
+    <source>.claude/specs/requirements.md</source>
+    <document_content>
+    {{REQUIREMENTS_CONTENT}}
+    </document_content>
+  </document>
+
+  <document index="2">
+    <source>.claude/specs/architecture.md</source>
+    <document_content>
+    {{ARCHITECTURE_CONTENT}}
+    </document_content>
+  </document>
+
+  <document index="3">
+    <source>Project File Tree</source>
+    <document_content>
+    {{PROJECT_TREE}}
+    </document_content>
+  </document>
+
+  <document index="4">
+    <source>.claude/state/implementation-notes.md</source>
+    <document_content>
+    {{IMPLEMENTATION_NOTES}}
+    </document_content>
+  </document>
+</documents>
+
+You are the Tester agent.
+
+**Context already loaded above - DO NOT re-read these files.**
+**File tree shows project structure - DO NOT run ls/find commands.**
+
+Your task: **$ARGUMENTS**
+
+Parse the request to determine:
+- **Scope:** unit, integration, e2e, coverage, or all (default)
+- **Target:** Specific module/feature (optional)
+
+See "Scope-Aware Testing Protocol" in your agent definition for detailed instructions.
+
+Follow these steps:
 
 1. **Analyze Target**
-   - Understand what needs testing
-   - Review existing tests
+   - Understand what needs testing (from requirements and implementation notes)
+   - Review existing tests in the file tree
    - Identify coverage gaps
 
-2. **Create Tests**
-   For each function/component:
-   - Happy path tests
-   - Edge case tests
-   - Error handling tests
+2. **Design Test Strategy**
+   - Plan test cases covering:
+     - Happy path scenarios
+     - Edge cases
+     - Error conditions
+     - Performance (if applicable)
 
-3. **Run Tests & Loop (Max 3 Attempts)**
+3. **Create Tests**
+   For each function/component:
+   - Unit tests for individual functions
+   - Integration tests for component interactions
+   - E2E tests for user workflows (if applicable)
+
+   Follow testing patterns from architecture specs.
+
+4. **Run Tests**
+   Execute test suite:
+   ```bash
+   npm test
+   # or
+   npm run test:coverage
+   ```
+
+5. **Analyze Results**
+   - Identify passing vs failing tests
+   - Calculate coverage percentage
+   - Document gaps
+
+6. **Document Results**
+   Write to `.claude/state/test-results.md`:
+   ```markdown
+   # Test Results: {Feature Name}
+
+   **Test Date:** {date}
+   **Target:** $ARGUMENTS
+
+   ## Summary
+   - Total Tests: X
+   - Passing: Y
+   - Failing: Z
+   - Coverage: N%
+
+   ## Coverage Details
+   | File | Lines | Branches | Functions |
+   |------|-------|----------|-----------|
+   | {file} | X% | Y% | Z% |
+
+   ## Test Suites
+   - ✅ {suite name} (X tests)
+   - ❌ {suite name} (Y tests, Z failures)
+
+   ## Coverage Gaps
+   - {file:line} - {description}
+
+   ## Quality Assessment
+   (Added by Code Reviewer if quality check runs)
+   - Comprehensiveness: {assessment}
+   - Edge cases: {assessment}
+   - Maintainability: {assessment}
+   - Redundant tests: {yes/no, details}
+
+   ## Recommendation
+   {PASS/FAIL with reasoning}
+   ```
+
+7. **Commit Tests**
+   ```bash
+   git add tests/
+   git commit -m "test: add comprehensive tests for {feature}
+
+   - Coverage: X%
+   - All tests passing
+   - Edge cases covered
+
+   🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+   Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
+   ```
+
+Output: Path to `.claude/state/test-results.md`
+```
+
+---
+
+## Step 2: Reflexion Loop (If Tests Fail)
 
 Follow the reflexion loop pattern in `.claude/patterns/reflexion.md`.
 
-**Reflexion Protocol (for test command):**
+**Reflexion Protocol (Max 3 Attempts):**
 
 **Attempt 1:** Run tests, identify failures. If tests fail, investigate code or test issues.
 **Attempt 2:** If new failures appear, investigate environment or test infrastructure.
@@ -37,22 +210,53 @@ After 3 attempts with persistent failures, output:
 
 **Manual Intervention Required:**
 - Review failure log above
+- Review test results in .claude/state/test-results.md
 - Recommended action: [specific suggestion]
 - Check test infrastructure OR review test expectations
+- Run `/project:debug` to investigate
 ```
 
 Do NOT attempt a 4th run without changes.
 
-### Test Types
+---
 
-- **Unit Tests** - Test individual functions
-- **Integration Tests** - Test component interactions
-- **E2E Tests** - Test user workflows
+## Step 3: Quality Check
 
-### Output
+If tests are passing, optionally invoke **code-reviewer agent** to review test quality:
+
+```
+<documents>
+  <document index="1">
+    <source>.claude/state/test-results.md</source>
+    <document_content>
+    {{TEST_RESULTS}}
+    </document_content>
+  </document>
+</documents>
+
+You are the Code Reviewer agent.
+
+**Context already loaded above - DO NOT re-read files.**
+The test-results.md shows what tests exist and their results - assess quality based on that.
+
+Your task: Review test quality:
+- Are tests comprehensive?
+- Do they cover edge cases?
+- Are tests maintainable?
+- Any redundant tests?
+
+Update the "Quality Assessment" section in `.claude/state/test-results.md` with your findings.
+```
+
+---
+
+## Output
 
 Provide:
-1. Test files created/modified
-2. Test results summary
-3. Coverage information
-4. Recommendations for additional testing
+1. **Test Files Created/Modified:** List of test files
+2. **Test Results Summary:** Pass/fail counts, coverage
+3. **Coverage Information:** Percentage and gaps
+4. **Recommendations:** Additional testing needed or improvements
+5. **Git Commit:** Tests committed with coverage info
+
+**Ready for next command.**

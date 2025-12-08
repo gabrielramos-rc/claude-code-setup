@@ -9,7 +9,7 @@ Analyze the request: **$ARGUMENTS**
 **Level 1: Cosmetic/One-off**
 - File count: 1-2 files
 - No new dependencies
-- Basic verification only (existing tests run)
+- Existing tests run (new tests not required)
 - Examples: typo, color change, single function fix, log statement
 - **Recommendation:** Run `/project:implement` directly.
 
@@ -25,7 +25,7 @@ Analyze the request: **$ARGUMENTS**
 - New dependencies/frameworks
 - Integration tests required
 - Examples: new stack, refactor system, init project, auth system
-- **Recommendation:** Run `/project:start` or `/project:spec`.
+- **Recommendation:** Run `/project:start` or `/project:plan`.
 
 ### Ambiguous Cases
 
