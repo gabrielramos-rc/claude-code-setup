@@ -64,7 +64,7 @@ All 9 agents updated with comprehensive role enforcement guidelines to prevent b
 **Distributed Git Workflow:**
 - Each agent commits their own work (no centralization to DevOps)
 - Clear commit message conventions: `feat:`, `fix:`, `test:`, `docs:`, `arch:`, `devops:`, `security:`, `review:`
-- DevOps coordinates strategy in `.claude/state/git-strategy.md` but doesn't make commits for other agents
+- Centralized git conventions in `.claude/patterns/git-workflow.md`
 
 **Agent Protocol Pattern:**
 All agents now follow standardized structure:
@@ -171,12 +171,15 @@ After parallel validation completes:
 ## Current Task
 **Command:** /project:implement Feature X
 **Status:** IN_PROGRESS
-**Progress:** 60%
+**Progress:** Step 3/5 - Validation
+**Next:** Run quality validation
 
 ## Workflow Steps
-- [x] Load context ✓ (completed 14:00)
-- [x] Engineer: Implement ✓ (completed 14:30)
-- [ ] Validation ← CURRENT
+1. [x] Load context ✓ (completed 14:00)
+2. [x] Engineer: Implement ✓ (completed 14:30)
+3. [ ] Validation ← CURRENT
+4. [ ] Documentation
+5. [ ] Human gate
 
 ## Last Checkpoint
 **Completed:** Engineer implemented feature
@@ -200,8 +203,9 @@ After parallel validation completes:
 - **resume.md** - Handles all statuses (IDLE, IN_PROGRESS, COMPLETED, FAILED)
 
 **Progress Tracking:**
-- implement.md: 0% → 15% → 40% → 70% → 90% → 100%
-- fix.md: 0% → 25% → 60% → 90% → 100%
+- implement.md: Step 0/5 → Step 1/5 → Step 2/5 → Step 3/5 → Step 4/5 → Step 5/5
+- fix.md: Step 0/4 → Step 1/4 → Step 2/4 → Step 3/4 → Step 4/4
+- Format: `Step X/Y - Checkpoint Name` with `**Next:** Next Step`
 - Real-time visibility for users
 
 **CLAUDE.md Auto-Population:**
@@ -253,19 +257,19 @@ Agents are defined with YAML frontmatter containing:
 ### Current Agent Ecosystem
 
 **Strategic Agents (opus)**:
-- `product-manager` - Requirements gathering, user stories, acceptance criteria
-- `ui-ux-designer` - User experience design, wireframes, design systems, accessibility
-- `architect` - System design (backend + frontend), technology selection, architectural decisions
+- `architect` - System design (backend + frontend), technology selection, architectural decisions, API design
 
 **Implementation Agents (sonnet)**:
+- `product-manager` - Requirements gathering, user stories, acceptance criteria
+- `ui-ux-designer` - User experience design, wireframes, design systems, accessibility
 - `engineer` - Code implementation following established patterns
-- `tester` - Test creation and execution
-- `code-reviewer` - Code quality, security, performance review
+- `tester` - Test creation and execution (unit/integration/e2e)
+- `code-reviewer` - Code quality, architecture compliance, performance review (NO security - moved to Security Auditor)
+- `security-auditor` - ALL security responsibilities (OWASP, CVE, dependency audit, vulnerability scanning)
 
-**Supporting Agents**:
-- `security-auditor` - Vulnerability scanning and security verification
-- `documenter` - Documentation generation and maintenance
-- `devops` - Deployment preparation and CI/CD
+**Supporting Agents (haiku/sonnet)**:
+- `documenter` (haiku) - Documentation generation and maintenance
+- `devops` (sonnet) - Deployment preparation and CI/CD
 
 ### Command Pattern Structure
 
@@ -364,16 +368,22 @@ This framework should evolve toward:
 
 ### Beta v0.2 Additions
 - `.claude/commands/route.md` - Task complexity analyzer and workflow router
+- `.claude/commands/rollback.md` - Safe git revert/reset with backup branches
 - `.claude/patterns/reflexion.md` - Shared retry pattern documentation
 - `.claude/docs/artifact-system.md` - Complete artifact priority protocol
 - `.claude/docs/beta-v0.2-metrics.md` - Success metrics and acceptance criteria
 - `.claude/tests/beta-v0.2-scenarios.md` - 13 behavioral test scenarios
+- `.claude/tests/framework-test-checklist.md` - Manual QA checklist for behavioral tests
 
 ### v0.3 Phase 1 Additions
-- `.claude/patterns/context-injection.md` - Command-level context injection pattern (1040 lines)
-- `.claude/docs/agent-memory-guidelines.md` - Prevent ad-hoc memory file proliferation (306 lines)
+- `.claude/patterns/context-injection.md` - Command-level context injection pattern
+- `.claude/patterns/model-selection.md` - When to use opus/sonnet/haiku
+- `.claude/patterns/git-workflow.md` - Centralized git conventions for all agents
+- `.claude/patterns/performance.md` - Cross-cutting performance patterns
+- `.claude/patterns/multi-repo.md` - Multi-repo architecture evolution guide
+- `.claude/docs/agent-memory-guidelines.md` - Prevent ad-hoc memory file proliferation
 - Updated commands: `implement.md`, `fix.md`, `test.md` with Step 0 context loading
-- Updated all 8 agents with role enforcement guidelines (2500+ total lines)
+- Updated all 9 agents with role enforcement guidelines
 - Agent protocol v0.3 with file boundaries and distributed git workflow
 
 ### v0.3 Phase 2 Additions
@@ -383,19 +393,64 @@ This framework should evolve toward:
 - 100% quality coverage with independent validation
 
 ### v0.3 Phase 3 Additions
-- `.claude/patterns/state-based-session-management.md` - Task tracking and resume pattern (835 lines)
-- `.claude/commands/resume.md` - Resume interrupted workflows (350+ lines)
+- `.claude/patterns/state-based-session-management.md` - Task tracking and resume pattern
+- `.claude/commands/resume.md` - Resume interrupted workflows
 - Updated `.claude/plans/current-task.md` - Active task state tracking template
-- Updated `implement.md` with 6 checkpoint updates (Init → Context → Engineer → Validation → Docs → Complete)
-- Updated `fix.md` with 4 complete checkpoint updates (Init → Context → Fix → Validation → Complete)
+- Updated `implement.md` with 5 checkpoint updates (Step 0/5 → Step 5/5)
+- Updated `fix.md` with 4 checkpoint updates (Step 0/4 → Step 4/4)
 - Updated `start.md` with CLAUDE.md auto-population from specifications
-- Progress tracking: 0% → 100% with checkpoint system
-- **Phase 3 Status:** 100% COMPLETE (all optional tasks included)
+- Step-based progress tracking: `Step X/Y - Checkpoint Name`
+
+### Benchmark System
+- `.claude/benchmark/baseline-v0.3.md` - Baseline metrics for v0.3
+- `.claude/benchmark/results/TEMPLATE.md` - Results report template
+- `.claude/benchmark/tools/` - Export and conversion utilities
 
 ### v0.3 Security Additions
 - `.claude/patterns/input-safety.md` - $ARGUMENTS validation and Bash path sanitization patterns
 - Updated `context-injection.md` - Clarified manual substitution process (no auto-templating)
 - Checklist for command authors on safe input handling
+
+### v0.3 Audit Additions (Sessions 1-7)
+
+**Status:** ✅ Complete (2025-12-07) - 27/27 issues resolved
+
+**Audit Summary:**
+| Category | Issues Resolved |
+|----------|-----------------|
+| Security (HIGH) | 4 |
+| Gaps | 7 |
+| Optimization | 4 |
+| Waste | 4 |
+| Production | 2 |
+| Unnecessary | 3 (2 Won't Fix) |
+| Bugs | 2 |
+
+**New Commands:**
+- `.claude/commands/rollback.md` - Safe git revert/reset with backup branches
+- `.claude/commands/test.md` - Extended with scope parameter (unit/integration/e2e/coverage)
+
+**New Patterns:**
+- `.claude/patterns/git-workflow.md` - Centralized git conventions for all agents
+- `.claude/patterns/multi-repo.md` - Multi-repo architecture evolution guide (v0.4 planned)
+- `.claude/patterns/performance.md` - Cross-cutting performance patterns
+- `.claude/patterns/model-selection.md` - When to use opus/sonnet/haiku
+
+**New Benchmark System:**
+- `.claude/benchmark/baseline-v0.3.md` - Baseline metrics for regression tracking
+- `.claude/benchmark/results/TEMPLATE.md` - Results report template
+
+**New Test System:**
+- `.claude/tests/framework-test-checklist.md` - 13-test manual QA checklist
+
+**Key Fixes:**
+- Security Auditor scoped to `.claude/state/security-findings.md` only
+- Code Reviewer no longer handles security (zero overlap with Security Auditor)
+- UI/UX Designer gained Bash access for accessibility tools
+- Step-based progress tracking replaces arbitrary percentages
+- Selective tree injection saves ~8000 tokens per workflow
+
+**Documentation:** Full audit details in `AUDIT-ISSUES.md` and `AUDIT-SESSIONS.md`
 
 ## Notes on Framework Usage
 
