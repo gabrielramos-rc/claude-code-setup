@@ -1,3 +1,9 @@
+---
+description: Generate or update documentation (README, API docs, user guides)
+allowed-tools: Task, Read, Write, Bash(npm run docs:*), Grep, Glob
+argument-hint: <scope-or-feature>
+---
+
 # Generate Documentation: $ARGUMENTS
 
 ## Instructions

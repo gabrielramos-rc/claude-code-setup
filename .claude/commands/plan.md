@@ -1,3 +1,9 @@
+---
+description: Plan a feature with requirements, architecture, and design
+allowed-tools: Task, Read, Write, Grep, Glob
+argument-hint: <feature-description>
+---
+
 # Plan Feature: $ARGUMENTS
 
 ## Process

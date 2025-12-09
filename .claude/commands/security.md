@@ -1,3 +1,9 @@
+---
+description: Perform security audit for vulnerabilities and compliance
+allowed-tools: Task, Read, Bash(npm audit:*), Bash(npx:*), Grep, Glob
+argument-hint: <scope-or-module-to-audit>
+---
+
 # Security Audit: $ARGUMENTS
 
 ## Instructions

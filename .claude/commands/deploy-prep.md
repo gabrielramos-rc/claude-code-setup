@@ -1,3 +1,9 @@
+---
+description: Prepare project for deployment (validation, config, CI/CD)
+allowed-tools: Task, Read, Write, Bash, Grep, Glob
+argument-hint: <environment> (staging|production)
+---
+
 # Deployment Preparation: $ARGUMENTS
 
 ## Instructions

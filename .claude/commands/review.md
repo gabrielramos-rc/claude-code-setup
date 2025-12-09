@@ -1,3 +1,9 @@
+---
+description: Review code for quality, architecture compliance, and maintainability
+allowed-tools: Task, Read, Grep, Glob
+argument-hint: <files-or-feature-to-review>
+---
+
 # Code Review: $ARGUMENTS
 
 ## Instructions

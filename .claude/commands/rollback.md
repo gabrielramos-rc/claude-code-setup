@@ -1,3 +1,9 @@
+---
+description: Safely undo commits with git revert or reset (creates backup branch)
+allowed-tools: Bash(git:*), Read, Grep
+argument-hint: [commit-hash] [--hard]
+---
+
 # Rollback: $ARGUMENTS
 
 ## Instructions

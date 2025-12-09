@@ -1,3 +1,9 @@
+---
+description: Deep diagnostic debugging for complex issues
+allowed-tools: Task, Read, Bash, Grep, Glob
+argument-hint: <error-or-issue-description>
+---
+
 # Debug: $ARGUMENTS
 
 ## Instructions

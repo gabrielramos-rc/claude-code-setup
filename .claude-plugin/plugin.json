@@ -1,0 +1,36 @@
+{
+  "name": "claude-code-framework",
+  "description": "Multi-agent orchestration framework for Claude Code with specialized agents, protocols, and automated workflows",
+  "version": "0.3.0",
+  "author": {
+    "name": "RCC Consultech"
+  },
+  "repository": "https://github.com/rcconsultech/claude-code-setup",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "multi-agent",
+    "orchestration",
+    "software-development",
+    "ai-workflow"
+  ],
+  "components": {
+    "commands": 18,
+    "agents": 9,
+    "protocols": 24,
+    "patterns": 13,
+    "hooks": 7
+  },
+  "features": [
+    "Multi-agent workflow orchestration",
+    "Context injection for token optimization",
+    "Parallel quality validation",
+    "State-based session management",
+    "Bounded reflexion with retry limits",
+    "24 domain-specific protocols",
+    "Automated hooks for formatting and validation"
+  ],
+  "requirements": {
+    "claudeCode": ">=1.0.0"
+  }
+}

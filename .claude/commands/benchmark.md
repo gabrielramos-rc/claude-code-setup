@@ -1,3 +1,8 @@
+---
+description: Profile framework performance and measure efficiency
+allowed-tools: Read, Write, Bash, Grep, Glob
+---
+
 # Benchmark: Profile Framework Performance
 
 ## Instructions

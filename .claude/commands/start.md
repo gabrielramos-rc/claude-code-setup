@@ -1,3 +1,9 @@
+---
+description: Initialize a new project with specs, architecture, and CLAUDE.md setup
+allowed-tools: Task, Read, Write, Edit, Bash, Grep, Glob
+argument-hint: <project-name-or-description>
+---
+
 # Start New Project: $ARGUMENTS
 
 ## Instructions

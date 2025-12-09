@@ -1,3 +1,9 @@
+---
+description: Implement a feature with full validation workflow (Engineer → Tester → Security → Review)
+allowed-tools: Task, Read, Write, Edit, Bash(npm:*), Bash(git:*), Grep, Glob
+argument-hint: <feature-description>
+---
+
 # Implement: $ARGUMENTS
 
 ## Instructions

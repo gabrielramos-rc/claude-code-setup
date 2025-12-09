@@ -1,3 +1,8 @@
+---
+description: Resume an interrupted workflow from its last checkpoint
+allowed-tools: Task, Read, Write, Edit, Bash, Grep, Glob
+---
+
 # Resume: Continue From Checkpoint
 
 ## Instructions

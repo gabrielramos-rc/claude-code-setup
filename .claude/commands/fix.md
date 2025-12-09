@@ -1,3 +1,9 @@
+---
+description: Debug and fix issues with validation (diagnose → fix → test → review)
+allowed-tools: Task, Read, Write, Edit, Bash(npm:*), Bash(git:*), Grep, Glob
+argument-hint: <issue-description>
+---
+
 # Fix Issue: $ARGUMENTS
 
 ## Instructions

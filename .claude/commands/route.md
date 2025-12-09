@@ -1,3 +1,9 @@
+---
+description: Analyze task complexity and recommend appropriate workflow
+allowed-tools: Read, Grep, Glob
+argument-hint: <task-description>
+---
+
 # Route Task: $ARGUMENTS
 
 ## Instructions

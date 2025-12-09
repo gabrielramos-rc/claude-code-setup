@@ -1,3 +1,9 @@
+---
+description: Create or run tests (unit, integration, e2e, coverage)
+allowed-tools: Task, Read, Write, Bash(npm test:*), Bash(npm run:*), Grep, Glob
+argument-hint: [unit|integration|e2e|coverage] [module]
+---
+
 # Testing: $ARGUMENTS
 
 ## Instructions

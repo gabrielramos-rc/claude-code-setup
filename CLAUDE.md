@@ -382,6 +382,7 @@ This framework should evolve toward:
 - `.claude/patterns/performance.md` - Cross-cutting performance patterns
 - `.claude/patterns/multi-repo.md` - Multi-repo architecture evolution guide
 - `.claude/docs/agent-memory-guidelines.md` - Prevent ad-hoc memory file proliferation
+- `.claude/docs/anthropic-best-practices.md` - **Reference guide for Anthropic's official best practices** (context engineering, subagents, Claude 4.x prompting)
 - Updated commands: `implement.md`, `fix.md`, `test.md` with Step 0 context loading
 - Updated all 9 agents with role enforcement guidelines
 - Agent protocol v0.3 with file boundaries and distributed git workflow
