@@ -1,0 +1,17 @@
+{
+  "_comment": "Copy this file to settings.local.json and customize for personal preferences",
+  "_note": "settings.local.json should NOT be committed to version control",
+
+  "model": "claude-sonnet-4-20250514",
+
+  "permissions": {
+    "allow": [
+      "Bash(docker:*)",
+      "Bash(kubectl:*)"
+    ]
+  },
+
+  "env": {
+    "PERSONAL_API_KEY": "your-api-key-here"
+  }
+}

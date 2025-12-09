@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "description": "GitHub integration for PR reviews, issues, and code management"
+    },
+    "postgres": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "DATABASE_URL": "${DATABASE_URL}"
+      },
+      "description": "PostgreSQL database queries and schema inspection"
+    },
+    "sentry": {
+      "type": "http",
+      "url": "https://mcp.sentry.dev/mcp",
+      "description": "Sentry error monitoring and debugging"
+    },
+    "linear": {
+      "type": "http",
+      "url": "https://mcp.linear.app/sse",
+      "description": "Linear issue tracking and project management"
+    }
+  }
+}
